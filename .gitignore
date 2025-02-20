@@ -1,0 +1,11 @@
+__pycache__
+test.env
+venv
+Dockerfile
+.vscode
+.DS_Store
+_build
+
+tests/archivos/bhe_recibidas_pdf/*
+tests/archivos/bte_emitidas_pdf/*
+tests/archivos/bte_emitidas_html/*
