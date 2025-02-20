@@ -1,0 +1,169 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración &mdash; documentación de contafi - 1.0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=92bc2f6d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Ejemplo" href="gettingstarted.example.html" />
+    <link rel="prev" title="Instalación y actualización" href="gettingstarted.install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            contafi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="gettingstarted.index.html">Empezando</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.legal.html">Términos y Condiciones de Uso</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.install.html">Instalación y actualización</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuración</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted.example.html">Ejemplo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev.index.html">Desarrollo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">contafi</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">contafi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="gettingstarted.index.html">Empezando</a></li>
+      <li class="breadcrumb-item active">Configuración</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/gettingstarted.setup.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuracion">
+<h1>Configuración<a class="headerlink" href="#configuracion" title="Link to this heading"></a></h1>
+<p>Para utilizar el cliente de API de ContaFi, se debe tener un token de usuario, generado y obtenido desde la cuenta de ContaFi.</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>El archivo test.env sólo sirve para usar con los test. Por lo que se deberán definir las variables de entorno por los siguientes dos métodos: Directo por consola (temporal), o definirlas directamente en el entorno (persistente).</p>
+</div>
+<section id="en-linux-o-macos">
+<h2>En Linux o MacOS:<a class="headerlink" href="#en-linux-o-macos" title="Link to this heading"></a></h2>
+<p>El token se almacena en una variable de entorno. Para almacenar en una variable de entorno, se debe escribir lo siguiente en consola:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CONTAFI_API_URL</span><span class="o">=</span><span class="s2">&quot;https://contafi.cl&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CONTAFI_API_TOKEN</span><span class="o">=</span><span class="s2">&quot;aqui-su-token-de-contafi&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CONTAFI_CONTRIBUYENTE_RUT</span><span class="o">=</span><span class="s2">&quot;12345678-9&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTAFI_API_TOKEN</span></code> es una cadena de 32 caracteres de largo. Almacena ese token en un lugar seguro y no lo compartas con nadie.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CONTAFI_CONTRIBUYENTE_RUT</span></code> es el identificador único del usuario registrado en el SII, sin puntos y con dígito verificador.</p></li>
+</ul>
+<p>Introducir en consola las variables de entorno almacena temporalmente las variables, y alternativamente, se puede modificar el archivo de configuración de shell en Linux (que se explicará a continuación), y añadir al final del archivo los comandos previamente introducidos. Añadir variables de entorno de esta forma es más persistente y no se repite su definición.</p>
+<ul class="simple">
+<li><p>Si se usa Linux, se deben añadir al archivo <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> los comandos previamente definidos.</p></li>
+<li><p>Si se usa MacOS, se deben añadir al archivo <code class="docutils literal notranslate"><span class="pre">~/.zshrc</span></code>.</p></li>
+</ul>
+<p>El paso siguiente sólo se hace para usuarios de MacOS. Por último, ejecutar el comando en cuestión para efectuar los cambios.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>~/.zshrc
+</pre></div>
+</div>
+</section>
+<section id="en-windows">
+<h2>En Windows:<a class="headerlink" href="#en-windows" title="Link to this heading"></a></h2>
+<p>Para almacenar en una variable de entorno en Windows, hay varias alternativas. La primera es utilizando cmd, y para almacenarlas utilizando cmd, ejecuta en el buscador de Windows «cmd», y ejecuta los siguientes comandos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>setx<span class="w"> </span>CONTAFI_API_URL<span class="w"> </span><span class="s2">&quot;https://contafi.cl&quot;</span>
+setx<span class="w"> </span>CONTAFI_API_TOKEN<span class="w"> </span><span class="s2">&quot;aqui-su-token-de-contafi&quot;</span>
+setx<span class="w"> </span><span class="nv">CONTAFI_CONTRIBUYENTE_RUT</span><span class="o">=</span><span class="s2">&quot;12345678-9&quot;</span>
+</pre></div>
+</div>
+<p>También se pueden definir utilizando Windows PowerShell, de una manera similar. Ejecuta en el buscador de Windows «PowerShell», y ejecuta los siguientes comandos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">$Env</span>:CONTAFI_API_URL<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://contafi.cl&quot;</span>
+<span class="nv">$Env</span>:CONTAFI_API_TOKEN<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;aqui-su-token-de-contafi&quot;</span>
+<span class="nv">$Env</span>:CONTAFI_CONTRIBUYENTE_RUT<span class="o">=</span><span class="s2">&quot;12345678-9&quot;</span>
+</pre></div>
+</div>
+<p>Como alternativa para almacenar las variables de manera persistente, debes seguir los siguientes pasos:</p>
+<ol class="arabic simple">
+<li><p>Abre el Panel de Control &gt; Sistema &gt; Configuración avanzada del sistema.</p></li>
+<li><p>En la pestaña Opciones avanzadas, selecciona Variables de entorno.</p></li>
+<li><p>Añade o modifica las variables en la sección de «Variables de usuario» o «Variables del sistema».</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="gettingstarted.install.html" class="btn btn-neutral float-left" title="Instalación y actualización" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="gettingstarted.example.html" class="btn btn-neutral float-right" title="Ejemplo" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2024, contafi.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
