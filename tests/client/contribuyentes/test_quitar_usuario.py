@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestQuitarUsuario(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para quitar autorización a un usuario de un contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,14 +34,13 @@ class TestQuitarUsuario(TestCase):
 
     def testQuitarUsuario(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de autorización a un usuario de
+        un contribuyente.
         '''
 
         usuario = getenv('TEST_USUARIO_AUT', 'esteban')
         rolId = 1
         try:
-            # Listado de BHEs.
             usuario = self.client.quitarUsuarioAutorizado(usuario, rolId)
 
             self.assertTrue(True)

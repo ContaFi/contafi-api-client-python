@@ -19,13 +19,12 @@
 
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestObtenerDatos(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para obtener datos de un contribuyente específico.
     '''
     @classmethod
     def setUpClass(cls):
@@ -36,12 +35,11 @@ class TestObtenerDatos(TestCase):
 
     def testObtenerEstadisticas(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de obtener datos de un
+        contribuyente específico.
         '''
 
         try:
-            # Listado de BHEs.
             datos = self.client.datos(self.rut)
 
             self.assertTrue(True)

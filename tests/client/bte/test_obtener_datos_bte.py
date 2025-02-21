@@ -25,19 +25,19 @@ from contafi.api_client.client.bte import Bte
 
 class TestObtenerDatosBte(TestCase):
     '''
-    Clase de pruebas para observar una BHE recibida.
+    Clase de pruebas para obtener el detalle de una BTE emitida.
     '''
     @classmethod
     def setUpClass(cls):
         # Variables base
         cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
         cls.client = Bte()
-        cls.numero = getenv('TEST_NRO_BHE', None)
+        cls.numero = getenv('TEST_NRO_BTE', None)
 
     def testObtenerDatosBhe(self):
         '''
-        Método de test para probar el recurso de obtener detalles de una BHE
-        recibida por el contribuyente.
+        Método de test para probar el recurso de obtener datos de una BHE
+        emitida por el contribuyente.
         '''
 
         filtros = {

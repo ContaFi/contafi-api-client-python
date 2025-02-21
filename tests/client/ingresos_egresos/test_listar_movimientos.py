@@ -25,7 +25,7 @@ from contafi.api_client.client.ingresos_egresos import IngresosEgresos
 
 class TestListarMovimientos(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar movimientos efectuados.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestListarMovimientos(TestCase):
 
     def testListarMovimientos(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar movimientos de dinero
+        (ingresos/egresos) efectuados por el contribuyente.
         '''
         periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
 

@@ -56,7 +56,7 @@ class Remuneraciones(ApiBase):
         '''
         url = '/remuneraciones'
 
-        if periodo:
+        if periodo is not None:
             url += '?periodo=%(periodo)s' % {'periodo': periodo}
 
         response = self.client.get(url)

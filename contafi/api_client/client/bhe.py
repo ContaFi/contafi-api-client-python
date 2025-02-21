@@ -58,10 +58,9 @@ class Bhe(ApiBase):
             dict
         '''
         url = '/bhe/boletas'
-        query = {}
 
         if len(filtros) > 0:
-            query_string = urlencode(query)
+            query_string = urlencode(filtros)
             url += '?%(query)s' % {'url': url, 'query': query_string}
 
         response = self.client.get(url)
@@ -116,10 +115,9 @@ class Bhe(ApiBase):
         url = '/bhe/pdf/%(emisor)s/%(numero)s' % {
             'emisor': emisor, 'numero': numero
         }
-        query = {}
 
         if len(filtros) > 0:
-            query_string = urlencode(query)
+            query_string = urlencode(filtros)
             url += '?%(query)s' % {'url': url, 'query': query_string}
 
         response = self.client.get(url)

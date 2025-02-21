@@ -24,7 +24,7 @@ from contafi.api_client.client.facturacion import Facturacion
 
 class TestListarProveedores(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar proveedores de compras efectuadas.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,8 +34,8 @@ class TestListarProveedores(TestCase):
 
     def testListarProveedores(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar proveedores de compras
+        ya efectuadas por el contribuyente.
         '''
 
         try:

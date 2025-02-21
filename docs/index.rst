@@ -24,8 +24,8 @@ Bienvenido a la documentación del cliente de API de ContaFi.
 .. toctree::
    :titlesonly:
 
-   gettingstarted.index
-   dev.index
+   getting-started/index
+   dev/index
 
 .. toctree::
    :maxdepth: 2

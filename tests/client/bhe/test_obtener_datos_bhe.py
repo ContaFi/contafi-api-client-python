@@ -25,7 +25,7 @@ from contafi.api_client.client.bhe import Bhe
 
 class TestObtenerDatosBhe(TestCase):
     '''
-    Clase de pruebas para observar una BHE recibida.
+    Clase de pruebas para obtener los datos de una BHE recibida.
     '''
     @classmethod
     def setUpClass(cls):

@@ -25,7 +25,7 @@ from contafi.api_client.client.remuneraciones import Remuneraciones
 
 class TestListarRemuneraciones(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar remuneraciones del contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestListarRemuneraciones(TestCase):
 
     def testListarRemuneraciones(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar remuneraciones del
+        contribuyente.
         '''
         periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
 

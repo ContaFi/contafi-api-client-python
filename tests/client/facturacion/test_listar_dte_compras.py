@@ -25,7 +25,7 @@ from contafi.api_client.client.facturacion import Facturacion
 
 class TestListarDteCompras(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar DTEs de compras del contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestListarDteCompras(TestCase):
 
     def testListarDteCompras(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar DTEs de compras
+        del contribuyente.
         '''
 
         estados = [1, 2, 3, 4]

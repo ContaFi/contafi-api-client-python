@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestAutorizarUsuario(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para autorizar a un usuario.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,15 +34,14 @@ class TestAutorizarUsuario(TestCase):
 
     def testAutorizarUsuario(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de autorizar a un usuario con un
+        rol en el contribuyente.
         '''
         data = {
             'usuario_username': getenv('TEST_USUARIO_AUT', 'esteban'),
             'rol_id': 1
         }
         try:
-            # Listado de BHEs.
             usuario = self.client.agregarUsuarioAutorizado(data)
 
             self.assertTrue(True)

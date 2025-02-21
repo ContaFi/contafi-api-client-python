@@ -25,7 +25,7 @@ from contafi.api_client.client.bhe import Bhe
 
 class TestListarBhes(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar BHEs recibidas.
     '''
     @classmethod
     def setUpClass(cls):
@@ -44,10 +44,11 @@ class TestListarBhes(TestCase):
                 'TEST_PERIODO', datetime.now().strftime('%Y%m')
             )
         }
+        print('\nperiodo: ', filtros)
         try:
             # Listado de BHEs.
             listaBhes = self.client.listar(filtros)
-
+            print('assert')
             self.assertTrue(True)
 
             if self.verbose:

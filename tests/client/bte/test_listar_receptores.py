@@ -24,7 +24,7 @@ from contafi.api_client.client.bte import Bte
 
 class TestListarReceptores(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar receptores de BTEs emitidas.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,12 +34,12 @@ class TestListarReceptores(TestCase):
 
     def testListarReceptores(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar receptores de BTEs
+        emitidas.
         '''
 
         try:
-            # Listado de BHEs.
+            # Listado de receptores.
             receptores = self.client.listarReceptores()
 
             self.assertTrue(True)

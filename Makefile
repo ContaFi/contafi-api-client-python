@@ -29,4 +29,4 @@ docs:
 	sphinx-apidoc -o docs contafi && sphinx-build -b html docs docs/_build/html
 
 clean:
-	rm -rf dist bhexpress.egg-info bhexpress/__pycache__ bhexpress/*.pyc
+	rm -rf dist contafi.egg-info contafi/__pycache__ contafi/*.pyc

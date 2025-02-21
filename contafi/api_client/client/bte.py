@@ -77,10 +77,9 @@ class Bte(ApiBase):
             dict
         '''
         url = '/bte/boletas'
-        query = {}
 
         if len(filtros) > 0:
-            query_string = urlencode(query)
+            query_string = urlencode(filtros)
             url += '?%(query)s' % {'url': url, 'query': query_string}
 
         response = self.client.get(url)

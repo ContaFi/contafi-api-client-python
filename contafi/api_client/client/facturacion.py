@@ -80,10 +80,9 @@ class Facturacion(ApiBase):
             dict
         '''
         url = '/dte/ventas'
-        query = {}
 
         if len(filtros) > 0:
-            query_string = urlencode(query)
+            query_string = urlencode(filtros)
             url += '?%(query)s' % {'url': url, 'query': query_string}
 
         response = self.client.get(url)
@@ -108,11 +107,12 @@ class Facturacion(ApiBase):
         :rtype:
             dict
         '''
-        url = '/dte/compras?estado=%(estado)s'
-        query = {}
+        url = '/dte/compras?estado=%(estado)s' % {
+            'estado': estado
+        }
 
         if len(filtros) > 0:
-            query_string = urlencode(query)
+            query_string = urlencode(filtros)
             url += '&%(query)s' % {'url': url, 'query': query_string}
 
         response = self.client.get(url)

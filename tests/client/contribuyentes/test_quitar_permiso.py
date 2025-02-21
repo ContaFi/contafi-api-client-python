@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestQuitarPermiso(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para quitar un permiso a un rol.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestQuitarPermiso(TestCase):
 
     def testQuitarPermiso(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de quitar un permiso específico
+        a un rol.
         '''
 
         try:
@@ -47,12 +47,11 @@ class TestQuitarPermiso(TestCase):
 
             permiso = 'bhe_ver'
 
-            # Listado de BHEs.
-            usuario = self.client.quitarPermisoRol(self.rolId, permiso)
+            rol = self.client.quitarPermisoRol(self.rolId, permiso)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestAutorizarUsuario() usuario: ', usuario, '\n')
+                print('\ntestQuitarPermiso() rol: ', rol, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

@@ -26,19 +26,19 @@ from contafi.api_client.client.bte import Bte
 
 class TestObtenerHtmlBte(TestCase):
     '''
-    Clase de pruebas para observar una BHE recibida.
+    Clase de pruebas para obtener el detalle del HTML de una BTE emitida.
     '''
     @classmethod
     def setUpClass(cls):
         # Variables base
         cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
         cls.client = Bte()
-        cls.numero = getenv('TEST_NRO_BHE', None)
+        cls.numero = getenv('TEST_NRO_BTE', None)
 
     def testObtenerHtmlBte(self):
         '''
-        Método de test para probar el recurso de obtener detalles de una BHE
-        recibida por el contribuyente.
+        Método de test para probar el recurso de obtener datos del HTML de una
+        BTE emitida por el contribuyente.
         '''
 
         filtros = {
@@ -55,11 +55,11 @@ class TestObtenerHtmlBte(TestCase):
             # Descarga de datos para el HTML.
             html = self.client.html(self.numero)
 
-            # Retrocede dos niveles para salir de 'bte/boletas' y entrar en 'archivos'
+            # Retrocede dos niveles para salir de 'client/bte'
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
             # Define la carpeta de destino correcta
-            output_dir = os.path.join(base_dir, 'archivos', 'bte_emitidas_pdf')
+            output_dir = os.path.join(base_dir, 'archivos', 'bte_emitidas_html')
 
             # Crear la carpeta si no existe
             os.makedirs(output_dir, exist_ok=True)
@@ -74,7 +74,7 @@ class TestObtenerHtmlBte(TestCase):
                 }
             )
 
-            # Creación del archivo PDF usando la ruta, nombre y datos obtenidos.
+            # Creación del archivo HTML usando la ruta, nombre y datos obtenidos.
             with open(filename, 'wb') as f:
                 f.write(html)
 

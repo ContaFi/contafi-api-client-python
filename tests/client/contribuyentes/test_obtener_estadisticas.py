@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestObtenerEstadisticas(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para obtener estadísticas de un contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,12 +34,11 @@ class TestObtenerEstadisticas(TestCase):
 
     def testObtenerEstadisticas(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de obtener estadísticas de un
+        contribuyente.
         '''
 
         try:
-            # Listado de BHEs.
             estadisticas = self.client.estadisticas()
 
             self.assertTrue(True)

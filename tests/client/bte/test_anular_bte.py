@@ -25,7 +25,7 @@ from contafi.api_client.client.bte import Bte
 
 class TestAnularBte(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para anular una BTE emitida.
     '''
     @classmethod
     def setUpClass(cls):
@@ -36,8 +36,8 @@ class TestAnularBte(TestCase):
 
     def testAnularBte(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de anular una BTE emitida
+        específica.
         '''
 
         data = {
@@ -47,7 +47,7 @@ class TestAnularBte(TestCase):
             'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
         }
         try:
-            # Listado de BHEs.
+            # Listado de BTEs (si numero está definido, se omite el if).
             if self.numero is None:
                 listaBhes = self.client.listar(filtros)
                 listaFiltrada = listaBhes['results'][0]

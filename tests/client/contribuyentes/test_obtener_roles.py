@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestObtenerRoles(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para obtener roles registrados en el contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -34,12 +34,11 @@ class TestObtenerRoles(TestCase):
 
     def testObtenerRoles(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de listar roles registrados
+        en el contribuyente.
         '''
 
         try:
-            # Listado de BHEs.
             roles = self.client.obtenerRoles()
 
             self.assertTrue(True)

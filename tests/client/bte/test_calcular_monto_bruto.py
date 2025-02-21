@@ -25,7 +25,7 @@ from contafi.api_client.client.bte import Bte
 
 class TestCalcularMontoBruto(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para calcular el monto bruto.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestCalcularMontoBruto(TestCase):
 
     def testCalcularMontoBruto(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de calcular el monto bruto a
+        partir de un monto líquido.
         '''
         liquido = 10000
         periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))

@@ -24,7 +24,8 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestObtenerSucursal(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para obtener el detalle de una sucursal de
+    un contribuyente.
     '''
     @classmethod
     def setUpClass(cls):
@@ -36,8 +37,8 @@ class TestObtenerSucursal(TestCase):
 
     def testObtenerSucursal(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de obtener el detalle de una
+        sucursal de un contribuyente.
         '''
 
         try:

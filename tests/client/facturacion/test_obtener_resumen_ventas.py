@@ -25,7 +25,7 @@ from contafi.api_client.client.facturacion import Facturacion
 
 class TestObtenerResumenVentas(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para obtener un resumen de ventas sin detalle.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestObtenerResumenVentas(TestCase):
 
     def testObtenerResumenVentas(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de obtener un resumen de ventas
+        sin detalle.
         '''
 
         filtros = {

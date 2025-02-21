@@ -26,19 +26,19 @@ from contafi.api_client.client.bte import Bte
 
 class TestObtenerPdfBte(TestCase):
     '''
-    Clase de pruebas para observar una BHE recibida.
+    Clase de pruebas para obtener el detalle del PDF de una BTE emitida.
     '''
     @classmethod
     def setUpClass(cls):
         # Variables base
         cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
         cls.client = Bte()
-        cls.numero = getenv('TEST_NRO_BHE', None)
+        cls.numero = getenv('TEST_NRO_BTE', None)
 
     def testObtenerPdfBte(self):
         '''
-        Método de test para probar el recurso de obtener detalles de una BHE
-        recibida por el contribuyente.
+        Método de test para probar el recurso de obtener datos del PDF de una
+        BTE emitida por el contribuyente.
         '''
 
         filtros = {
@@ -55,7 +55,7 @@ class TestObtenerPdfBte(TestCase):
             # Descarga de datos para el PDF.
             pdf = self.client.pdf(self.numero)
 
-            # Retrocede dos niveles para salir de 'bhe/boletas' y entrar en 'archivos'
+            # Retrocede dos niveles para salir de 'client/bte'
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
             # Define la carpeta de destino correcta

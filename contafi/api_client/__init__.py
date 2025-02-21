@@ -318,10 +318,11 @@ class ApiClient:
                     ) or 'Error desconocido.'
                 except json.decoder.JSONDecodeError:
                     message = 'Error al decodificar los datos en JSON: %(response)s' % {
-                        'response': response.text
+                        'response': response.reason
                     }
-                raise ApiException('Error HTTP: %(message)s' % {
-                    'message': message
+                raise ApiException('%(message)s (%(code)s)' % {
+                    'message': message,
+                    'code': response.status_code
                 })
         return response
 

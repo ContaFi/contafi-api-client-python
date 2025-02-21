@@ -24,7 +24,7 @@ from contafi.api_client.client.contribuyentes import Contribuyentes
 
 class TestAgregarPermiso(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para agregar permisos a un rol.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,8 +35,8 @@ class TestAgregarPermiso(TestCase):
 
     def testAgregarPermiso(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
+        Método de test para probar el recurso de agregar permisos a un rol
+        del contribuyente.
         '''
 
         try:
@@ -50,12 +50,11 @@ class TestAgregarPermiso(TestCase):
                 'permisos': ['bhe_ver']
             }
 
-            # Listado de BHEs.
-            usuario = self.client.agregarPermisoRol(data)
+            rol = self.client.agregarPermisoRol(data)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestAutorizarUsuario() usuario: ', usuario, '\n')
+                print('\ntestAgregarPermiso() rol: ', rol, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

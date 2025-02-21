@@ -25,7 +25,7 @@ from contafi.api_client.client.bte import Bte
 
 class TestListarBtes(TestCase):
     '''
-    Clase de pruebas para listar BHEs emitidas.
+    Clase de pruebas para listar BTEs emitidas.
     '''
     @classmethod
     def setUpClass(cls):
@@ -35,7 +35,7 @@ class TestListarBtes(TestCase):
 
     def testListarBtes(self):
         '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
+        Método de test para probar el recurso de listar BTEs emitidas, y
         filtrarlas usando un periodo.
         '''
 
@@ -45,7 +45,7 @@ class TestListarBtes(TestCase):
             )
         }
         try:
-            # Listado de BHEs.
+            # Listado de BTEs.
             listaBtes = self.client.listar(filtros)
 
             self.assertTrue(True)
