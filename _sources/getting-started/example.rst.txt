@@ -59,4 +59,4 @@ El siguiente es un ejemplo básico de cómo emitir una BTE utilizando el cliente
     print("\nEmitir BTE ejemplo: ", response, "\n")
 
 .. seealso::
-    Para saber más sobre los parámetros posibles y el cómo consumir las API, referirse a la `documentación de BHExpress. <https://developers.bhexpress.cl/>`_
+    Para saber más sobre los parámetros posibles y el cómo consumir las API, referirse a la `documentación de ContaFi. <https://developers.contafi.cl/>`_
