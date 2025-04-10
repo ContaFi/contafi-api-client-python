@@ -17,35 +17,53 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for removing a user's authorization from a contributor."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestQuitarUsuario(TestCase):
-    '''
-    Clase de pruebas para quitar autorización a un usuario de un contribuyente.
-    '''
+
+    """
+    Test case for removing a user's authorization from a contributor.
+
+    This test ensures that the `quitar_usuario_autorizado()` method
+    correctly revokes user access from a role.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Initialize the test environment and Contribuyentes API client.
+
+        Sets verbosity from the `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
 
-    def testQuitarUsuario(self):
-        '''
-        Método de test para probar el recurso de autorización a un usuario de
-        un contribuyente.
-        '''
+    def test_quitar_usuario(self):
+        """
+        Test the `quitar_usuario_autorizado()` method for removing user access.
 
+        Retrieves the username from `TEST_USUARIO_AUT` and uses role ID 1
+        for removal.
+
+        If `TEST_VERBOSE=1`, prints the response.
+
+        :raises AssertionError: If the user could not be removed.
+        """
         usuario = getenv('TEST_USUARIO_AUT', 'esteban')
-        rolId = 1
+        rol_id = 1
         try:
-            usuario = self.client.quitarUsuarioAutorizado(usuario, rolId)
+            usuario = self.client.quitar_usuario_autorizado(usuario, rol_id)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestQuitarUsuario() usuario: ', usuario, '\n')
+                print('\ntest_quitar_usuario() usuario: ', usuario, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

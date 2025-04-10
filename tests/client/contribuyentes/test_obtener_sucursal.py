@@ -17,30 +17,49 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving the details of a contributor's branch."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestObtenerSucursal(TestCase):
-    '''
-    Clase de pruebas para obtener el detalle de una sucursal de
-    un contribuyente.
-    '''
+
+    """
+    Test case for retrieving the details of a contributor's branch (sucursal).
+
+    Validates that the `sucursal()` method returns detailed information
+    for the provided or fetched branch code.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Initialize the Contribuyentes API client.
+
+        Sets RUT and branch code (`TEST_COD_SUCURSAL`) if available.
+        Sets verbosity flag.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
         cls.emisor = getenv('CONTAFI_CONTRIBUYENTE_RUT', '76192083-9')
         cls.sucursal = getenv('TEST_COD_SUCURSAL', None)
 
-    def testObtenerSucursal(self):
-        '''
-        Método de test para probar el recurso de obtener el detalle de una
-        sucursal de un contribuyente.
-        '''
+    def test_obtener_sucursal(self):
+        """
+        Test the `sucursal()` method for retrieving branch details.
 
+        If no branch code is configured, fetches it from the first result
+        of the `datos()` method. Asserts that a valid response is returned.
+
+        If `TEST_VERBOSE=1`, the branch information is printed.
+
+        :raises AssertionError: If the API call fails or
+        returns an invalid response.
+        """
         try:
             if self.sucursal is None:
                 datos = self.client.datos(self.emisor)
@@ -52,6 +71,6 @@ class TestObtenerSucursal(TestCase):
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObtenerSucursal() sucursal: ', sucursal, '\n')
+                print('\ntest_obtener_sucursal() sucursal: ', sucursal, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

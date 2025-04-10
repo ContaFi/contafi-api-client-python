@@ -17,136 +17,128 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
-from .. import ApiBase
+"""Client for managing suppliers, purchases, and sales using e-invoicing."""
 from urllib.parse import urlencode
 
+from .. import ApiBase
+
+
 class Facturacion(ApiBase):
-    '''
-    Módulo que permite gestionar proveeedores, compras y ventas con
-    facturación (DTE).
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for managing suppliers, purchases, and sales using e-invoicing(DTE).
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    This class provides methods for retrieving DTE records related to
+    sales and purchases, as well as listing clients and suppliers.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be read from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base API URL. If not provided, a default will be used.
+    :type api_url: str
+
+    :param api_version: API version to use. If not specified, a default
+                        version will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception on HTTP error
+                                responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the Facturacion client instance.
+
+        Inherits API-related configuration from the `ApiBase` class.
+        """
         super().__init__()
 
-    def resumenVentasSinDetalle(self, periodo):
-        '''
-        Recurso que permite obtener el listado paginado de resumenes asociados
-        a ventas.
+    def resumen_ventas_sin_detalle(self, periodo):
+        """
+        Retrieve a paginated list of sales summaries for a given period.
 
-        :param str periodo:
-            Periodo donde obtener el listado de resumen de ventas.
+        :param periodo: Period to filter the sales summary list (e.g.,2023-08).
+        :type periodo: str
 
-        :return:
-            Respuesta JSON con el listado paginado de ventas.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the paginated list of sales summaries.
+        :rtype: dict
+        """
         url = '/dte/ventas/resumen?periodo=%(periodo)s' % {'periodo': periodo}
 
         response = self.client.get(url)
 
         return response.json()
 
-    def listarVentas(self, filtros = {}):
-        '''
-        Recurso que permite obtener el listado paginado de documentos
-        tributarios electrónicos asociados a ventas
+    def listar_ventas(self, filtros = None):
+        """
+        Retrieve a paginated list of sales-related DTEs with full details.
 
-        :param dict filtros:
-            Filtros de búsqueda.
+        :param filtros: Optional filters to apply to the sales search.
+        :type filtros: dict
 
-        :return:
-            Respuesta JSON con el listado paginado de DTEs de ventas,
-            con detalle.
+        :return: JSON response containing the list of sales DTEs.
+        :rtype: dict
+        """
+        if filtros is None:
+            filtros = {}
 
-        :rtype:
-            dict
-        '''
         url = '/dte/ventas'
 
-        if len(filtros) > 0:
+        if filtros:
             query_string = urlencode(filtros)
-            url += '?%(query)s' % {'url': url, 'query': query_string}
+            url += '?%(query)s' % {'query': query_string}
 
         response = self.client.get(url)
 
         return response.json()
 
-    def listarCompras(self, estado, filtros):
-        '''
-        Recurso que permite obtener el listado paginado de documentos
-        tributarios electrónicos asociados a compras.
+    def listar_compras(self, estado, filtros):
+        """
+        Retrieve a paginated list of purchase-related DTEs with full details.
 
-        :param int estado:
-            Estado del documento en el registro de compras.
+        :param estado: Status of the document in the purchase register.
+        :type estado: int
 
-        :param dict filtros:
-            Filtros de búsqueda.
+        :param filtros: Filters to apply to the query(e.g., by supplier, date).
+        :type filtros: dict
 
-        :return:
-            Respuesta JSON con el listado paginado de DTEs de compras, con
-            detalle.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the paginated list of purchase DTEs.
+        :rtype: dict
+        """
         url = '/dte/compras?estado=%(estado)s' % {
             'estado': estado
         }
 
         if len(filtros) > 0:
             query_string = urlencode(filtros)
-            url += '&%(query)s' % {'url': url, 'query': query_string}
+            url += '&%(query)s' % {'query': query_string}
 
         response = self.client.get(url)
 
         return response.json()
 
-    def listarClientes(self):
-        '''
-        Recurso que permite obtener el listado paginado de clientes
-        asociados a ventas.
+    def listar_clientes(self):
+        """
+        Retrieve a paginated list of clients associated with sales DTEs.
 
-        :return:
-            Respuesta JSON con el listado de clientes de ventas.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing the list of sales clients.
+        :rtype: dict
+        """
         url = '/dte/clientes'
 
         response = self.client.get(url)
 
         return response.json()
 
-    def listarProveedores(self):
-        '''
-        Recurso que permite obtener el listado paginado de proveedores
-        asociados a compras.
+    def listar_proveedores(self):
+        """
+        Retrieve a paginated list of suppliers associated with purchase DTEs.
 
-        :return:
-            Respuesta JSON con el listado de proveedores de compras.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing the list of suppliers.
+        :rtype: dict
+        """
         url = '/dte/proveedores'
 
         response = self.client.get(url)

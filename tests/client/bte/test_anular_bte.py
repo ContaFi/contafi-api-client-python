@@ -17,48 +17,75 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for annulling an issued BTE document."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestAnularBte(TestCase):
-    '''
-    Clase de pruebas para anular una BTE emitida.
-    '''
+
+    """
+    Test case for canceling an issued BTE (Boleta de Terceros Electrónica).
+
+    This test ensures that the `anular()` method from the `Bte` client
+    can successfully cancel an issued BTE when a valid document number
+    and reason are provided.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing test methods.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity based on `TEST_VERBOSE` environment variable.
+        - the BTE number to cancel, if specified in `TEST_NRO_BTE`.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
         cls.numero = getenv('TEST_NRO_BTE', None)
 
-    def testAnularBte(self):
-        '''
-        Método de test para probar el recurso de anular una BTE emitida
-        específica.
-        '''
+    def test_anular_bte(self):
+        """
+        Test the `anular()` method for canceling a specific BTE.
 
+        If `TEST_NRO_BTE` is not defined, the test fetches a list of BTEs
+        for the given period (`TEST_PERIODO`) and selects the first one.
+
+        The test then attempts to cancel the selected BTE using `causa = 3`.
+
+        If `TEST_VERBOSE=1`, the result is printed to the console.
+
+        :raises AssertionError: If the API call fails or returns an error.
+        """
         data = {
             'causa': 3
         }
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
         try:
-            # Listado de BTEs (si numero está definido, se omite el if).
+            # List of BTEs (if `numero` is defined, the if is skipped).
             if self.numero is None:
-                listaBhes = self.client.listar(filtros)
-                listaFiltrada = listaBhes['results'][0]
+                lista_bhes = self.client.listar(filtros)
+                lista_filtrada = lista_bhes['results'][0]
 
-                self.numero = listaFiltrada['numero']
+                self.numero = lista_filtrada['numero']
 
             anular = self.client.anular(self.numero, data)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestAnularBte() boleta: ', anular, '\n')
+                print('\ntest_anular_bte() boleta: ', anular, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

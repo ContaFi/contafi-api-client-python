@@ -17,39 +17,61 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing money movements (incomes and expenses)."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.ingresos_egresos import IngresosEgresos
 
+
 class TestListarMovimientos(TestCase):
-    '''
-    Clase de pruebas para listar movimientos efectuados.
-    '''
+
+    """
+    Test case for listing money movements (incomes and expenses).
+
+    This test ensures that the `IngresosEgresos` API client can retrieve
+    transactions for the contributor based on the selected period.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing test methods.
+
+        Initializes:
+        - the `IngresosEgresos` API client.
+        - verbosity setting from the `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = IngresosEgresos()
 
-    def testListarMovimientos(self):
-        '''
-        Método de test para probar el recurso de listar movimientos de dinero
-        (ingresos/egresos) efectuados por el contribuyente.
-        '''
-        periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+    def test_listar_movimientos(self):
+        """
+        Test the `listar_movimientos()` method for listing financial movements.
+
+        Fetches movements for a given period taken from `TEST_PERIODO`
+        or defaults to the current UTC period (`YYYYMM` format).
+
+        If `TEST_VERBOSE=1`, the retrieved data is printed to the console.
+
+        :raises AssertionError: If the API call fails or
+        returns an invalid response.
+        """
+        periodo = getenv('TEST_PERIODO', datetime.now(UTC).strftime('%Y%m'))
 
 
         try:
-            ingresosEgresos = self.client.listarMovimientos(periodo)
+            ingresos_egresos = self.client.listar_movimientos(periodo)
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestListarMovimientos() Ingresos Egresos: ',
-                    ingresosEgresos,
+                    '\ntest_listar_movimientos() Ingresos Egresos: ',
+                    ingresos_egresos,
                     '\n'
                 )
         except ApiException as e:

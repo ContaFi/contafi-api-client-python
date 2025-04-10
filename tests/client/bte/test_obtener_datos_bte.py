@@ -17,39 +17,66 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving the detailed data of an issued BTE."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestObtenerDatosBte(TestCase):
-    '''
-    Clase de pruebas para obtener el detalle de una BTE emitida.
-    '''
+
+    """
+    Test case for retrieving the detailed data of an issued BTE.
+
+    This test validates that the `datos()` method from the `Bte` client
+    correctly returns the full detail of a given document.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing the test.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity setting from the `TEST_VERBOSE` environment variable.
+        - the BTE number to retrieve, from `TEST_NRO_BTE` if set.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
         cls.numero = getenv('TEST_NRO_BTE', None)
 
-    def testObtenerDatosBhe(self):
-        '''
-        Método de test para probar el recurso de obtener datos de una BHE
-        emitida por el contribuyente.
-        '''
+    def test_obtener_datos_bhe(self):
+        """
+        Test the `datos()` method for retrieving details of a specific BTE.
 
+        If no BTE number is provided via environment variables, the
+        test fetches the first available document from the current or
+        configured period.
+
+        The response is expected to include the complete BTE data.
+
+        If `TEST_VERBOSE=1`, the response is printed to the console.
+
+        :raises AssertionError: If the API call fails or response is invalid.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             if self.numero is None:
-                listaBtes = self.client.listar(filtros)
-                listaFiltrada = listaBtes['results'][0]
+                lista_btes = self.client.listar(filtros)
+                lista_filtrada = lista_btes['results'][0]
 
-                self.numero = listaFiltrada['numero']
+                self.numero = lista_filtrada['numero']
 
             response = self.client.datos(
                 self.numero
@@ -58,6 +85,6 @@ class TestObtenerDatosBte(TestCase):
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObtenerDatosBte() Datos: ', response, '\n')
+                print('\test_obtener_datos_bhe() Datos: ', response, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

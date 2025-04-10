@@ -17,43 +17,52 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Client for retrieving information related to employee payroll."""
 from .. import ApiBase
 
+
 class Remuneraciones(ApiBase):
-    '''
-    Módulo que permite obtener información de las remuneraciones.
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for retrieving information related to employee payroll.
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    This class provides access to salary records (remuneraciones) for a
+    taxpayer, including optional filtering by period.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be read from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base API URL. If not provided, a default will be used.
+    :type api_url: str
+
+    :param api_version: API version. If not specified, a default version
+                        will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception on HTTP error
+                                responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the Remuneraciones client instance.
+
+        Inherits API configuration from the `ApiBase` class.
+        """
         super().__init__()
 
-    def listarRemuneraciones(self, periodo = None):
-        '''
-        Recurso que permite obtener el listado paginado de remuneraciones del
-        contribuyente.
+    def listar_remuneraciones(self, periodo = None):
+        """
+        Retrieve a paginated list of remuneration records for the taxpayer.
 
-        :param str periodo:
-            Periodo de búsqueda para las remuneraciones.
-        :return:
-            Respuesta JSON con el listado de remuneraciones.
-        :rtype:
-            dict
-        '''
+        :param periodo: Optional period to filter the payroll list.
+        :type periodo: str
+
+        :return: JSON response containing the remuneration records.
+        :rtype: dict
+        """
         url = '/remuneraciones'
 
         if periodo is not None:

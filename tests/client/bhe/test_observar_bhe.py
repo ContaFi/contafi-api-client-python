@@ -17,48 +17,79 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for observing a received BHE document."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bhe import Bhe
 
+
 class TestObservarBhe(TestCase):
-    '''
-    Clase de pruebas para observar una BHE recibida.
-    '''
+
+    """
+    Test case for observing a received BHE (Boleta de Honorarios Electrónica).
+
+    This test ensures that the `observar()` method from the `Bhe` client
+    correctly submits an observation for a received document.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Prepare test context before running tests.
+
+        Initializes:
+        - the `Bhe` API client.
+        - the RUT of the issuer from `TEST_EMISOR`.
+        - the BHE document number from `TEST_NRO_BHE`.
+        - verbosity from `TEST_VERBOSE`.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bhe()
         cls.emisor = getenv('TEST_EMISOR', '')
         cls.numero = getenv('TEST_NRO_BHE', None)
 
-    def testObservarBhe(self):
-        '''
-        Método de test para probar el recurso de observar una BHE recibida.
-        '''
+    def test_observar_bhe(self):
+        """
+        Test the observation submission endpoint for a received BHE.
 
+        If `TEST_NRO_BHE` and `TEST_EMISOR` are not provided via environment
+        variables, the test fetches the first BHE for the given `periodo`
+        (from `TEST_PERIODO`) to obtain a valid document to observe.
+
+        It then calls `observar()` with a predefined cause (e.g., cause=1)
+        and asserts that the request succeeds.
+
+        If `TEST_VERBOSE=1`, the response is printed to the console.
+
+        :raises AssertionError: If the observation fails or
+        raises an exception.
+        """
         data = {
             'causa': 1
         }
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             if self.numero is None and self.emisor == '':
-                listaBhes = self.client.listar(filtros)
-                listaFiltrada = listaBhes['results'][0]
+                lista_bhes = self.client.listar(filtros)
+                lista_filtrada = lista_bhes['results'][0]
 
-                emisorRut = listaFiltrada['emisor']['contribuyente']['rut']
-                emisorDv = listaFiltrada['emisor']['contribuyente']['dv']
-                self.numero = listaFiltrada['numero']
+                emisor_rut = lista_filtrada['emisor']['contribuyente']['rut']
+                emisor_dv = lista_filtrada['emisor']['contribuyente']['dv']
+                self.numero = lista_filtrada['numero']
 
                 self.emisor = '%(rut)s-%(dv)s' % {
-                    'rut': emisorRut,
-                    'dv': emisorDv
+                    'rut': emisor_rut,
+                    'dv': emisor_dv
                 }
 
             response = self.client.observar(
@@ -70,6 +101,6 @@ class TestObservarBhe(TestCase):
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObservarBhe() Bhe: ', response, '\n')
+                print('\ntest_observar_bhe() Bhe: ', response, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

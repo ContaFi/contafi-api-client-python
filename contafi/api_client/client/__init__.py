@@ -16,3 +16,4 @@
 # (LGPL) junto a este programa. En caso contrario, consulte
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
+"""Client package for the ContaFi API."""

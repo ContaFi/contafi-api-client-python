@@ -17,41 +17,59 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing received BHE documents."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bhe import Bhe
 
+
 class TestListarBhes(TestCase):
-    '''
-    Clase de pruebas para listar BHEs recibidas.
-    '''
+
+    """
+    Test case for listing received BHEs (Boletas de Honorarios Electrónicas).
+
+    This test validates that the `listar()` method of the `Bhe` client
+    returns results when using a valid date period as a filter.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up test environment before running the test suite.
+
+        Initializes the BHE client and sets verbosity based on the
+        `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bhe()
 
-    def testListarBhes(self):
-        '''
-        Método de test para probar el recurso de listar BHEs recibidas, y
-        filtrarlas usando un periodo.
-        '''
+    def test_listar_bhes(self):
+        """
+        Test the BHE listing endpoint using a period filter.
 
+        Retrieves the period from the `TEST_PERIODO` environment variable
+        (or defaults to the current UTC year-month), calls the `listar()`
+        method, and asserts the request succeeds.
+
+        If `TEST_VERBOSE=1`, the output will include the response payload.
+
+        :raises AssertionError: If the API call fails or throws an exception.
+        """
         filtros = {
             'periodo': getenv(
-                'TEST_PERIODO', datetime.now().strftime('%Y%m')
+                'TEST_PERIODO', datetime.now(UTC).strftime('%Y%m')
             )
         }
-        print('\nperiodo: ', filtros)
         try:
-            # Listado de BHEs.
-            listaBhes = self.client.listar(filtros)
-            print('assert')
+            # List of BHEs.
+            lista_bhes = self.client.listar(filtros)
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestListarBhes() boletas: ', listaBhes, '\n')
+                print('\ntest_listar_bhes() boletas: ', lista_bhes, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

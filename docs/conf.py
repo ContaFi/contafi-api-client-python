@@ -5,15 +5,22 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+"""
+Configuration file for the Sphinx documentation builder.
 
+This file contains the configuration for the Sphinx documentation builder.
+It includes the project information, general configuration, and options for
+HTML output.
+"""
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../'))
 
 project = 'contafi'
-copyright = '2024, contafi'
+copyright = '2024, contafi' # noqa: A001
 author = 'contafi'
-release = '1.0.1'
+release = '2.0.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

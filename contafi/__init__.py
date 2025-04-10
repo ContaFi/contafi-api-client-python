@@ -16,3 +16,9 @@
 # (LGPL) junto a este programa. En caso contrario, consulte
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
+"""
+ContaFi package initialization.
+
+This package provides modules for accessing and managing the ContaFi API,
+including authentication, endpoints for invoices, payroll, and contributors.
+"""

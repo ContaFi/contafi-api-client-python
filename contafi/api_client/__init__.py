@@ -17,32 +17,43 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
-from os import getenv
-import time
-import requests
-import urllib
+"""
+ContaFi API client package.
+
+Contains the core client logic and API base classes required to interact
+with the ContaFi web services.
+"""
 import json
-from abc import ABC
+from os import getenv
+from urllib.parse import urljoin
+
+import requests
+
 
 class ApiClient:
-    '''
-    Cliente para interactuar con la API de ContaFi.
 
-    :param str token:
-        Token de autenticación del usuario. Si no se proporciona,
-        se intentará obtener de una variable de entorno.
+    """
+    Client for interacting with the ContaFi API.
 
-    :param str url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    Handles authentication, request headers, URL versioning, and
+    request execution with error handling.
 
-    :param str version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param token: User authentication token. If not provided, the value will be
+                read from the environment variable `CONTAFI_API_TOKEN`.
+    :type token: str
 
-    :param bool raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param url: Base URL of the API. Defaults to https://contafi.cl or
+                the value of `CONTAFI_API_URL`.
+    :type url: str
+
+    :param version: API version. Defaults to 'v1'.
+    :type version: str
+
+    :param raise_for_status: Whether to raise exceptions on HTTP errors.
+                            Defaults to True.
+    :type raise_for_status: bool
+    """
+
     __DEFAULT_URL = 'https://contafi.cl'
     __DEFAULT_VERSION = 'v1'
 
@@ -53,9 +64,11 @@ class ApiClient:
             version = None,
             raise_for_status = True
         ):
-        '''
-        Constructor para inicializar el Cliente de la API de ContaFi.
-        '''
+        """
+        Initialize the API client.
+
+        Validates token, URL, and RUT, and prepares default request headers.
+        """
         self.token = self.__validate_token(token)
         self.url = self.__validate_url(url)
         self.rut = self.__validate_rut()
@@ -64,21 +77,17 @@ class ApiClient:
         self.raise_for_status = raise_for_status
 
     def __validate_token(self, token):
-        '''
-        Valida y retorna el token de autenticación.
+        """
+        Validate and return the authentication token.
 
-        :param str token:
-            Token de autenticación a validar.
+        :param token: Token to validate or fallback to environment variable.
+        :type token: str
 
-        :return:
-            Token validado.
+        :return: Validated token.
+        :rtype: str
 
-        :rtype:
-            str
-
-        :raises ApiException:
-            Si el token no es válido o está ausente.
-        '''
+        :raises ApiException: If the token is missing or invalid.
+        """
         token = token or getenv('CONTAFI_API_TOKEN')
         if not token:
             raise ApiException(
@@ -87,58 +96,45 @@ class ApiClient:
         return str(token).strip()
 
     def __validate_url(self, url):
-        '''
-        Valida y retorna la URL base para la API.
+        """
+        Validate and return the API base URL.
 
-        :param str url:
-            URL a validar.
+        :param url: URL to validate.
+        :type url: str
 
-        :return:
-            URL validada.
+        :return: Validated URL string.
+        :rtype: str
 
-        :rtype:
-            str
-
-        :raises ApiException:
-            Si la URL no es válida o está ausente.
-        '''
+        :raises ApiException: If the URL is missing or invalid.
+        """
         return str(url).strip() if url else getenv(
             'CONTAFI_API_URL', self.__DEFAULT_URL
         ).strip()
 
     def __validate_rut(self):
-        '''
-        Valida y retorna el RUT del contribuyente de ContaFi a utilizar.
+        """
+        Validate and return the RUT of the taxpayer.
 
-        :param str rut:
-            RUT a validar.
+        :return: Validated taxpayer RUT.
+        :rtype: str
 
-        :return:
-            RUT validado.
-
-        :rtype:
-            str
-
-        :raises ApiException:
-            Si el RUT no es válido o está ausente.
-        '''
+        :raises ApiException: If the RUT is not set in the environment.
+        """
         rut = getenv('CONTAFI_CONTRIBUYENTE_RUT', '')
         if rut == '':
             raise ApiException(
-                'Se debe configurar la variable de entorno: CONTAFI_CONTRIBUYENTE_RUT.'
+                'Se debe configurar la variable de entorno: '
+                'CONTAFI_CONTRIBUYENTE_RUT.'
             )
         return str(rut).strip()
 
     def __generate_headers(self):
-        '''
-        Genera y retorna las cabeceras por defecto para las solicitudes.
+        """
+        Generate default HTTP headers used in all API requests.
 
-        :return:
-            Cabeceras por defecto.
-
-        :rtype:
-            dict
-        '''
+        :return: Dictionary with base headers.
+        :rtype: dict
+        """
         return {
             'User-Agent': 'ContaFi: Cliente de API en Python.',
             'Accept': 'application/json',
@@ -148,60 +144,51 @@ class ApiClient:
         }
 
     def get(self, resource, headers = None):
-        '''
-        Realiza una solicitud GET a la API.
+        """
+        Send a GET request to the specified API resource.
 
-        :param str resource:
-            Recurso de la API a solicitar.
+        :param resource: API resource path (e.g., "/dte/ventas").
+        :type resource: str
 
-        :param dict headers:
-            Cabeceras adicionales para la solicitud.
+        :param headers: Optional custom headers.
+        :type headers: dict
 
-        :return:
-            Respuesta de la solicitud.
-
-        :rtype:
-            requests.Response
-        '''
+        :return: HTTP response object.
+        :rtype: requests.Response
+        """
         return self.__request('GET', resource, headers = headers)
 
     def delete(self, resource, headers = None):
-        '''
-        Realiza una solicitud DELETE a la API.
+        """
+        Send a DELETE request to the specified API resource.
 
-        :param str resource:
-            Recurso de la API a solicitar.
+        :param resource: API resource path.
+        :type resource: str
 
-        :param dict headers:
-            Cabeceras adicionales para la solicitud.
+        :param headers: Optional custom headers.
+        :type headers: dict
 
-        :return:
-            Respuesta de la solicitud.
-
-        :rtype:
-            requests.Response
-        '''
+        :return: HTTP response object.
+        :rtype: requests.Response
+        """
         return self.__request('DELETE', resource, headers = headers)
 
     def post(self, resource, data = None, headers = None):
-        '''
-        Realiza una solicitud POST a la API.
+        """
+        Send a POST request to the specified API resource.
 
-        :param str resource:
-            Recurso de la API a solicitar.
+        :param resource: API resource path.
+        :type resource: str
 
-        :param dict data:
-            Datos a enviar en la solicitud.
+        :param data: Data to send in the request body.
+        :type data: dict
 
-        :param dict headers:
-            Cabeceras adicionales para la solicitud.
+        :param headers: Optional custom headers.
+        :type headers: dict
 
-        :return:
-            Respuesta de la solicitud.
-
-        :rtype:
-            requests.Response
-        '''
+        :return: HTTP response object.
+        :rtype: requests.Response
+        """
         return self.__request(
             'POST',
             resource,
@@ -210,24 +197,21 @@ class ApiClient:
         )
 
     def put(self, resource, data = None, headers = None):
-        '''
-        Realiza una solicitud PUT a la API.
+        """
+        Send a PUT request to the specified API resource.
 
-        :param str resource:
-            Recurso de la API a solicitar.
+        :param resource: API resource path.
+        :type resource: str
 
-        :param dict data:
-            Datos a enviar en la solicitud.
+        :param data: Data to send in the request body.
+        :type data: dict
 
-        :param dict headers:
-            Cabeceras adicionales para la solicitud.
+        :param headers: Optional custom headers.
+        :type headers: dict
 
-        :return:
-            Respuesta de la solicitud.
-
-        :rtype:
-            requests.Response
-        '''
+        :return: HTTP response object.
+        :rtype: requests.Response
+        """
         return self.__request(
             'PUT',
             resource,
@@ -236,35 +220,33 @@ class ApiClient:
         )
 
     def __request(self, method, resource, data = None, headers = None):
-        '''
-        Método privado para realizar solicitudes HTTP.
+        """
+        Perform an HTTP request to the API.
 
+        This internal method constructs the full URL, applies default headers,
+        serializes the body if necessary, and returns the raw response.
 
-        :param str method:
-            Método HTTP a utilizar.
+        :param method: HTTP method (e.g., GET, POST).
+        :type method: str
 
-        :param str resource:
-            Recurso de la API a solicitar.
+        :param resource: API resource path.
+        :type resource: str
 
-        :param dict data:
-            Datos a enviar en la solicitud (opcional).
+        :param data: Optional request body data.
+        :type data: dict or str
 
-        :param dict headers:
-            Cabeceras adicionales para la solicitud (opcional).
+        :param headers: Optional headers to include.
+        :type headers: dict
 
-        :return:
-            Respuesta de la solicitud.
+        :return: HTTP response object.
+        :rtype: requests.Response
 
-        :rtype:
-            requests.Response
-
-        :raises ApiException:
-            Si el método HTTP no es soportado o si hay un error de conexión.
-        '''
+        :raises ApiException: On connection, timeout, or request error.
+        """
         api_path = '/api/%(version)s%(resource)s' % {
             'version': self.version, 'resource': resource
         }
-        full_url = urllib.parse.urljoin(
+        full_url = urljoin(
             self.url + '/', api_path.lstrip('/')
         )
         headers = headers or {}
@@ -290,34 +272,35 @@ class ApiClient:
             )
 
     def __check_and_return_response(self, response):
-        '''
-        Verifica la respuesta de la solicitud HTTP y maneja los errores.
+        """
+        Validate an HTTP response and raise a standardized error if needed.
 
-        :param requests.Response response:
-            Objeto de respuesta de requests.
+        :param response: HTTP response from the API.
+        :type response: requests.Response
 
-        :return:
-            Respuesta validada.
+        :return: The validated response.
+        :rtype: requests.Response
 
-        :rtype:
-            requests.Response
-
-        :raises ApiException:
-            Si la respuesta contiene un error HTTP.
-        '''
-        if response.status_code != 200 and self.raise_for_status:
+        :raises ApiException: If the status code is not 200 and
+        raise_for_status is True.
+        """
+        status_success = 200
+        if response.status_code != status_success and self.raise_for_status:
             try:
                 response.raise_for_status()
-            except requests.exceptions.HTTPError as error:
+            except requests.exceptions.HTTPError:
                 try:
                     error = response.json()
                     message = error.get(
                         'message', ''
                     ) or error.get(
                         'exception', ''
+                    ) or error.get(
+                        'detail', ''
                     ) or 'Error desconocido.'
                 except json.decoder.JSONDecodeError:
-                    message = 'Error al decodificar los datos en JSON: %(response)s' % {
+                    message = 'Error al decodificar los datos en JSON: '
+                    message += '%(response)s' % {
                         'response': response.reason
                     }
                 raise ApiException('%(message)s (%(code)s)' % {
@@ -327,44 +310,48 @@ class ApiClient:
         return response
 
 class ApiException(Exception):
-    '''
-    Excepción personalizada para errores en el cliente de la API.
-    '''
+
+    """
+    Custom exception for handling errors in the ContaFi API client.
+
+    This exception is raised when an HTTP error, connection failure,
+    timeout, or malformed response occurs. It allows for an optional
+    error code and additional contextual parameters.
+    """
 
     def __init__(self, message, code = None, params = None):
-        '''
-        Constructor para la creación de manejo de errores.
+        """
+        Initialize the API exception.
 
-        :param str message:
-            Mensaje de error.
+        :param message: Error message describing the issue.
+        :type message: str
 
-        :param int code:
-            Código de error (opcional).
+        :param code: Optional error code (HTTP or application-specific).
+        :type code: int, optional
 
-        :param dict params:
-            Parámetros adicionales del error (opcional).
-        '''
+        :param params: Optional dictionary with additional context or metadata.
+        :type params: dict, optional
+        """
         self.message = message
         self.code = code
         self.params = params
         super().__init__(message)
 
     def __str__(self):
-        '''
-        Devuelve una representación en cadena del error, proporcionando un contexto claro
-        del problema ocurrido. Esta representación incluye el prefijo "[ContaFi]",
-        seguido del código de error si está presente, y el mensaje de error.
+        """
+        Return a formatted string representation of the exception.
 
-        Si se especifica un código de error, el formato será:
-        "[ContaFi] Error {code}: {message}"
+        The string includes the prefix "[ContaFi]" and optionally the
+        error code if provided.
 
-        Si no se especifica un código de error, el formato será:
-        "[ContaFi] {message}"
+        Examples:
+            "[ContaFi] Error 401: Invalid token"
+            "[ContaFi] Unexpected error occurred."
 
-        :return:
-            Una cadena que representa el error de una manera clara y concisa.
+        :return: A string describing the error.
         :rtype: str
-        '''
+
+        """
         if self.code is not None:
             return '[ContaFi] Error %(code)s: %(message)s' % {
                 'code': self.code, 'message': self.message
@@ -372,23 +359,28 @@ class ApiException(Exception):
         else:
             return '[ContaFi] %(message)s' % {'message': self.message}
 
-class ApiBase(ABC):
-    '''
-    Clase base para las clases que consumen la API (wrappers).
+class ApiBase:
 
-    :param str api_token:
-        Token de autenticación para la API.
+    """
+    Abstract base class for ContaFi API wrappers.
 
-    :param str api_url:
-        URL base para la API.
+    Used as a foundation for specialized modules that interact with
+    specific API endpoints (e.g., BHE, BTE, invoices, etc.). Provides
+    a preconfigured `ApiClient` instance to be reused by subclasses.
 
-    :param str api_version:
-        Versión de la API.
+    :param api_token: Authentication token for the ContaFi API.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base URL for the ContaFi API.
+    :type api_url: str
+
+    :param api_version: API version to use (e.g., "v1").
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception automatically
+                                on HTTP error responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(
             self,
@@ -397,6 +389,24 @@ class ApiBase(ABC):
             api_version = None,
             api_raise_for_status = True
         ):
+        """
+        Initialize the base API wrapper and create a configured ApiClient.
+
+        This client will be used by subclasses to perform HTTP operations
+        with the appropriate authentication and configuration settings.
+
+        :param api_token: API token for authorization.
+        :type api_token: str
+
+        :param api_url: Base API endpoint.
+        :type api_url: str
+
+        :param api_version: Version of the API to use.
+        :type api_version: str
+
+        :param api_raise_for_status: Enable automatic HTTP error raising.
+        :type api_raise_for_status: bool
+        """
         self.client = ApiClient(
             api_token,
             api_url,

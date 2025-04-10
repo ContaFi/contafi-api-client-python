@@ -17,40 +17,56 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving a sales summary (without detailed items)."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.facturacion import Facturacion
 
+
 class TestObtenerResumenVentas(TestCase):
-    '''
-    Clase de pruebas para obtener un resumen de ventas sin detalle.
-    '''
+
+    """
+    Test case for retrieving a sales summary (without detailed items).
+
+    Validates that the `resumen_ventas_sin_detalle()` method returns
+    an aggregated summary of sales for the given period.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """Initialize the Facturacion client and configure verbosity."""
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Facturacion()
 
-    def testObtenerResumenVentas(self):
-        '''
-        Método de test para probar el recurso de obtener un resumen de ventas
-        sin detalle.
-        '''
+    def test_obtener_resumen_ventas(self):
+        """
+        Test the `resumen_ventas_sin_detalle()` method for a given period.
 
+        Uses `TEST_PERIODO` or defaults to the current month (`YYYYMM`).
+
+        If `TEST_VERBOSE=1`, the summary is printed.
+
+        :raises AssertionError: If the response is invalid or the call fails.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
-            response = self.client.resumenVentasSinDetalle(filtros)
+            response = self.client.resumen_ventas_sin_detalle(filtros)
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestObtenerResumenVentas() Resumen: ',
+                    '\ntest_obtener_resumen_ventas() Resumen: ',
                     response,
                     '\n'
                 )

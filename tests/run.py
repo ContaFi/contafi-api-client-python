@@ -16,53 +16,91 @@
 # (LGPL) junto a este programa. En caso contrario, consulte
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
+"""
+Run the tests for the ContaFi API client.
 
+This script allows you to run specific tests or all tests in
+the test directory.
+It also loads environment variables from a test.env file in the
+tests directory.
+
+"""
 import argparse
-from dotenv import load_dotenv
 import os
 import sys
 import unittest
 
-# Modificar directorio para incluir el repositorio al PATH de Python y se
-# encuentre el módulo de contafi sin tener que instalarlo
+from dotenv import load_dotenv
+
+# Modify the directory to include the repository in the Python PATH and
+# find the contafi module without having to install it
 app_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, app_dir)
 
-# Clase especial para resultado de los tests
+# Special class for test results
 class CustomTestResult(unittest.TextTestResult):
-    def addFailure(self, test, err):
+
+    """
+    Custom test result class for enhancing assertion failure reporting.
+
+    Overrides the default `addFailure` behavior in `unittest.TextTestResult`
+    to provide additional output for failed assertions.
+    """
+
+    def addFailure(self, test, err): # noqa: N802
+        """
+        Handle assertion failures with custom output formatting.
+
+        If the failure is an `AssertionError`, it writes the test ID and
+        error message directly to the output stream, then processes it as
+        a standard error for consistent tracking.
+
+        For all other exceptions, the method falls back to the default
+        unittest behavior.
+
+        :param test: The test case instance that failed.
+        :type test: unittest.TestCase
+
+        :param err: The exception info tuple (type, value, traceback).
+        :type err: tuple
+        """
         exception_type, value, traceback = err
         if exception_type is AssertionError:
-            self.stream.writeln(f'\nFAIL: {test.id()}')
-            self.stream.writeln(f'Assertion Error: {value}')
-
+            self.stream.write(f'\nFAIL: {test.id()}\n')
+            self.stream.write(f'Assertion Error: {value}\n')
+            self.stream.flush()
             self.addError(test, err)
 
-        # Manejo estándar para otros errores
+        # Standard handling for other errors
         super().addFailure(test, err)
 
-# Directorio de tests
+# Tests directory
 tests_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Cargar variables de entorno para los tests
+# Load environment variables for the tests
 if os.path.exists(os.path.join(tests_dir, 'test.env')):
     load_dotenv(os.path.join(tests_dir, 'test.env'), override=True)
 
-# Determinar si se pidió un test específico o se ejecutan todos
-parser = argparse.ArgumentParser(description='Ejecución de los casos de prueba')
+# Determine if a specific test was requested or all tests are executed
+parser = argparse.ArgumentParser(
+    description='Execution of the test cases'
+)
 parser.add_argument(
     'test_case',
     nargs = '?',
     default = None,
-    help = 'Permite especificar un test a ejecutar (ej: "boletas.test_boletas")'
+    help = 'Permite indicar un test a ejecutar (ej: "boletas.test_boletas")'
 )
 args = parser.parse_args()
 
-# Cargar el test solicitado o todos los del directorio de tests
+# Load the requested test or all tests in the tests directory
 loader = unittest.TestLoader()
-suite = loader.loadTestsFromName(args.test_case) if args.test_case else loader.discover(tests_dir)
+if args.test_case:
+    suite = loader.loadTestsFromName(args.test_case)
+else:
+    suite = loader.discover(tests_dir)
 
-# Ejecutar los tests
+# Execute the tests
 runner = unittest.TextTestRunner(failfast=True, resultclass=CustomTestResult)
 try:
     runner.run(suite)

@@ -17,34 +17,59 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for issuing a new BTE (Boleta de Terceros Electrónica)."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestEmitirBte(TestCase):
-    '''
-    Clase de pruebas para emitir una BTE.
-    '''
+
+    """
+    Test case for issuing a new BTE (Boleta de Terceros Electrónica).
+
+    This test ensures that the `emitir()` method from the `Bte` client
+    can correctly submit a document with required header and detail.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing test methods.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity mode based on `TEST_VERBOSE`.
+        - the issuer RUT from the environment variable
+          `CONTAFI_CONTRIBUYENTE_RUT`.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
         cls.emisor = getenv('CONTAFI_CONTRIBUYENTE_RUT', '')
 
-    def testEmitirBte(self):
-        '''
-        Método de test para probar el recurso de emitir una BTE.
-        '''
+    def test_emitir_bte(self):
+        """
+        Test the `emitir()` method by submitting a valid BTE payload.
 
-        fechaEmis = datetime('%Y-%m-%d')
+        Builds a BTE document with:
+        - Header information (`FchEmis`, `RUTEmisor`, `RUTRecep`, etc.),
+        - Two detail items with amounts.
 
-        datosBte = {
+        If the emission is successful, the test passes.
+        If `TEST_VERBOSE=1`, the emitted BTE data is printed.
+
+        :raises AssertionError: If the API call fails or response is invalid.
+        """
+        fecha_emis = datetime.now(UTC).strftime('%Y-%m-%d')
+
+        datos_bte = {
             'Encabezado': {
                 'IdDoc': {
-                    'FchEmis' : fechaEmis,
+                    'FchEmis' : fecha_emis,
                 },
                 'Emisor': {
                     'RUTEmisor' : self.emisor,
@@ -69,11 +94,11 @@ class TestEmitirBte(TestCase):
         }
 
         try:
-            emitir = self.client.emitir(datosBte)
+            emitir = self.client.emitir(datos_bte)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestEmitirBte() boleta: ', emitir, '\n')
+                print('\ntest_emitir_bte() boleta: ', emitir, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

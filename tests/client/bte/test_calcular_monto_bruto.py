@@ -17,36 +17,61 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for calculating the gross amount from a net amount."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestCalcularMontoBruto(TestCase):
-    '''
-    Clase de pruebas para calcular el monto bruto.
-    '''
+
+    """
+    Test case for calculating the gross amount (monto bruto).
+
+    This test verifies that the BTE API correctly returns the gross
+    value when given a net amount and a valid period.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing test methods.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity setting from the `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
 
-    def testCalcularMontoBruto(self):
-        '''
-        Método de test para probar el recurso de calcular el monto bruto a
-        partir de un monto líquido.
-        '''
+    def test_calcular_monto_bruto(self):
+        """
+        Test the `calcular_monto_bruto()` method using a fixed net amount.
+
+        Uses a default net amount of 10,000 and the current period
+        (or value from `TEST_PERIODO`) to calculate the gross amount.
+
+        If `TEST_VERBOSE=1`, the result is printed to the console.
+
+        :raises AssertionError: If the API call fails or returns an error.
+        """
         liquido = 10000
-        periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+        periodo = getenv('TEST_PERIODO', datetime.now(UTC).strftime('%Y%m'))
 
         try:
-            montoBruto = self.client.calcularMontoBruto(liquido, periodo)
+            monto_bruto = self.client.calcular_monto_bruto(liquido, periodo)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestCalcularMontoBruto() monto bruto: ', montoBruto, '\n')
+                print(
+                    '\ntest_calcular_monto_bruto() monto bruto: ',
+                    monto_bruto,
+                    '\n'
+                )
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

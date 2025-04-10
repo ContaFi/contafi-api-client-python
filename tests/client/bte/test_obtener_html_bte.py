@@ -17,55 +17,87 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving the HTML content of an issued BTE."""
 import os
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestObtenerHtmlBte(TestCase):
-    '''
-    Clase de pruebas para obtener el detalle del HTML de una BTE emitida.
-    '''
+
+    """
+    Test case for retrieving the HTML content of an issued BTE.
+
+    This test ensures that the `html()` method from the `Bte` client
+    returns a valid HTML representation and that it is saved correctly
+    to disk.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running the test.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity setting from the `TEST_VERBOSE` environment variable.
+        - the BTE number to retrieve, from `TEST_NRO_BTE` if set.
+        """
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
         cls.numero = getenv('TEST_NRO_BTE', None)
 
-    def testObtenerHtmlBte(self):
-        '''
-        Método de test para probar el recurso de obtener datos del HTML de una
-        BTE emitida por el contribuyente.
-        '''
+    def test_obtener_html_bte(self):
+        """
+        Test the `html()` method for retrieving HTML content of a BTE.
 
+        If no document number is set, fetches the first available one for
+        the specified or current period.
+
+        The HTML content is saved under `archivos/bte_emitidas_html/`
+        with a filename formatted as `CONTAFI_BTE_<numero>.html`.
+
+        If `TEST_VERBOSE=1`, the output filename is printed.
+
+        :raises AssertionError: If HTML content is not returned.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             if self.numero is None:
-                listaBtes = self.client.listar(filtros)
-                listaFiltrada = listaBtes['results'][0]
+                lista_btes = self.client.listar(filtros)
+                lista_filtrada = lista_btes['results'][0]
 
-                self.numero = listaFiltrada['numero']
+                self.numero = lista_filtrada['numero']
 
-            # Descarga de datos para el HTML.
+            # Download data for the HTML.
             html = self.client.html(self.numero)
 
-            # Retrocede dos niveles para salir de 'client/bte'
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            # Go back two levels to exit 'client/bte'
+            base_dir = os.path.dirname(
+                os.path.dirname(os.path.dirname(__file__))
+            )
 
-            # Define la carpeta de destino correcta
-            output_dir = os.path.join(base_dir, 'archivos', 'bte_emitidas_html')
+            # Define the correct destination folder
+            output_dir = os.path.join(
+                base_dir,
+                'archivos',
+                'bte_emitidas_html'
+            )
 
-            # Crear la carpeta si no existe
+            # Create the folder if it doesn't exist
             os.makedirs(output_dir, exist_ok=True)
 
-            # Creación del la ruta generada y nombre del archivo con la siguiente
-            # nomenclatura:
+            # Create the file path and name with the following nomenclature:
             # CONTAFI_BTE_123.html
             filename = os.path.join(
                 output_dir,
@@ -74,13 +106,13 @@ class TestObtenerHtmlBte(TestCase):
                 }
             )
 
-            # Creación del archivo HTML usando la ruta, nombre y datos obtenidos.
+            # Create the HTML file using the path, name and data.
             with open(filename, 'wb') as f:
                 f.write(html)
 
             self.assertIsNotNone(html)
 
             if self.verbose:
-                print('\ntestObtenerHtmlBte() filename: ', filename,'\n')
+                print('\ntest_obtener_html_bte() filename: ', filename,'\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

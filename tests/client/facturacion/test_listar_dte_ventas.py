@@ -17,40 +17,56 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing sales DTEs (ventas) of the contributor."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.facturacion import Facturacion
 
+
 class TestListarDteVentas(TestCase):
-    '''
-    Clase de pruebas para listar DTEs de ventas del contribuyente.
-    '''
+
+    """
+    Test case for listing sales DTEs (ventas) of the contributor.
+
+    Ensures that `listar_ventas()` returns a valid response when filtering
+    by period.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """Initialize the Facturacion client and verbosity setting."""
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Facturacion()
 
-    def testListarDteVentas(self):
-        '''
-        Método de test para probar el recurso de listar DTEs de ventas
-        del contribuyente
-        '''
+    def test_listar_dte_ventas(self):
+        """
+        Test the `listar_ventas()` method for retrieving sales DTEs.
 
+        Filters the request using the period from `TEST_PERIODO`.
+
+        If `TEST_VERBOSE=1`, prints the sales DTE results.
+
+        :raises AssertionError: If the API call fails or result is empty.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
-            response = self.client.listarVentas(filtros)
+            response = self.client.listar_ventas(filtros)
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestListarDteVentas() Ventas: ',
+                    '\ntest_listar_dte_ventas() Ventas: ',
                     response,
                     '\n'
                 )

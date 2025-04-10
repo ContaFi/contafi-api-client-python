@@ -17,33 +17,48 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving registered roles of a contributor."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestObtenerRoles(TestCase):
-    '''
-    Clase de pruebas para obtener roles registrados en el contribuyente.
-    '''
+
+    """
+    Test case for retrieving registered roles of a contributor.
+
+    This test ensures that the `obtener_roles()` method returns a valid
+    list of roles available for assignment.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Initialize the test environment before running the test.
+
+        Sets up the Contribuyentes client and the verbosity flag.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
 
-    def testObtenerRoles(self):
-        '''
-        Método de test para probar el recurso de listar roles registrados
-        en el contribuyente.
-        '''
+    def test_obtener_roles(self):
+        """
+        Test the `obtener_roles()` method for retrieving all defined roles.
 
+        If `TEST_VERBOSE=1`, the list of roles is printed.
+
+        :raises AssertionError: If the API call fails or returns an empty list.
+        """
         try:
-            roles = self.client.obtenerRoles()
+            roles = self.client.obtener_roles()
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObtenerRoles() roles: ', roles, '\n')
+                print('\ntest_obtener_roles() roles: ', roles, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

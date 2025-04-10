@@ -17,43 +17,49 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Client for managing taxpayers, including roles and permissions."""
 from .. import ApiBase
 
+
 class Contribuyentes(ApiBase):
-    '''
-    Módulo que permite gestionar contribuyentes en ContaFi, junto con los
-    roles y permisos disponibles.
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for managing taxpayers in ContaFi, including roles and permissions.
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    Provides methods for querying taxpayer data, managing authorized users,
+    and modifying role-based permissions.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be read from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base API URL. If not provided, a default will be used.
+    :type api_url: str
+
+    :param api_version: API version to use. If not specified, a default
+                        version will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception on HTTP error
+                                responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the Contribuyentes client instance.
+
+        Inherits API-related configuration from the `ApiBase` class.
+        """
         super().__init__()
 
     def estadisticas(self):
-        '''
-        Recurso que permite obtener la estadística de un contribuyente a
-        partir de su RUT.
+        """
+        Retrieve statistics for the current taxpayer (based on RUT).
 
-        :return:
-            Respuesta JSON con las estadísticas.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing taxpayer statistics.
+        :rtype: dict
+        """
         url = '/contribuyentes/estadisticas'
 
         response = self.client.get(url)
@@ -61,19 +67,15 @@ class Contribuyentes(ApiBase):
         return response.json()
 
     def datos(self, rut):
-        '''
-        Recurso que permite obtener los datos de un contribuyente a
-        partir de su RUT.
+        """
+        Retrieve taxpayer information based on RUT.
 
-        :param str rut:
-            RUT del contribuyente a consultar, sin puntos y con DV.
+        :param rut: Taxpayer's RUT (without dots, includes DV).
+        :type rut: str
 
-        :return:
-            Respuesta JSON con los datos del contribuyente.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with taxpayer details.
+        :rtype: dict
+        """
         url = '/contribuyentes/%(rut)s' % {'rut': rut}
 
         response = self.client.get(url)
@@ -81,19 +83,15 @@ class Contribuyentes(ApiBase):
         return response.json()
 
     def sucursal(self, sucursal):
-        '''
-        Recurso que permite obtener los datos de una sucursal de un
-        contribuyente a partir de su código.
+        """
+        Retrieve information for a specific taxpayer branch office.
 
-        :param int sucursal:
-            ID de la sucursal a consultar.
+        :param sucursal: Branch office ID.
+        :type sucursal: int
 
-        :return:
-            Respuesta JSON con los datos de la sucursal.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with branch data.
+        :rtype: dict
+        """
         url = '/contribuyentes/sucursales/%(sucursal)s' % {
             'sucursal': sucursal
         }
@@ -102,42 +100,35 @@ class Contribuyentes(ApiBase):
 
         return response.json()
 
-    def agregarUsuarioAutorizado(self, body):
-        '''
-        Recurso que permite autorizar un usuario con cierto rol en un
-        contribuyente.
+    def agregar_usuario_autorizado(self, body):
+        """
+        Authorize a user for the taxpayer with a specific role.
 
-        :param dict body:
-            Datos como el nombre de usuario y rol a asignar.
+        :param body: Dictionary containing username and role to assign.
+        :type body: dict
 
-        :return:
-            Respuesta JSON con la información del usuario autorizado.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the authorized user information.
+        :rtype: dict
+        """
         url = '/contribuyentes/usuarios'
 
         response = self.client.put(url, body)
 
         return response.json()
 
-    def quitarUsuarioAutorizado(self, usuario, rol):
-        '''
-        Recurso que permite quitar a un usuario con cierto rol en un
-        contribuyente.
+    def quitar_usuario_autorizado(self, usuario, rol):
+        """
+        Remove an authorized user and role from the taxpayer.
 
-        :param str usuario:
-            Nombre del usuario a remover.
+        :param usuario: Username to be removed.
+        :type usuario: str
 
-        :param int rol:
-            Rol del usuario.
+        :param rol: Role ID assigned to the user.
+        :type rol: int
 
-        :return:
-            Respuesta JSON con la información del usuario removido.
-
+        :return: JSON response with information of the removed user.
         :rtype: dict
-        '''
+        """
         url = '/contribuyentes/usuarios/%(usuario)s/%(rol)s' % {
             'usuario': usuario,
             'rol': rol
@@ -147,60 +138,50 @@ class Contribuyentes(ApiBase):
 
         return response.json()
 
-    def obtenerRoles(self):
-        '''
-        Recurso que entrega los roles de un contribuyente.
+    def obtener_roles(self):
+        """
+        Retrieve the list of roles available for the taxpayer.
 
-        :return:
-            Respuesta JSON con el detalle de cada rol.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the role definitions.
+        :rtype: dict
+        """
         url = '/contribuyentes/roles'
 
         response = self.client.get(url)
 
         return response.json()
 
-    def agregarPermisoRol(self, body):
-        '''
-        Recurso que permite agregar permisos a un rol.
+    def agregar_permiso_rol(self, body):
+        """
+        Add one or more permissions to a role.
 
-        :param dict body:
-            Datos que incluyen el rol a modificar y sus permisos.
+        :param body: Dictionary with role ID and permissions to add.
+        :type body: dict
 
-        :return:
-            Respuesta JSON con el rol modificado.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the updated role.
+        :rtype: dict
+        """
         url = '/contribuyentes/roles'
 
         response = self.client.put(url, body)
 
         return response.json()
 
-    def quitarPermisoRol(self, idRol, permiso):
-        '''
-        Recurso que permite quitar un permiso asociado a un rol de un
-        contribuyente.
+    def quitar_permiso_rol(self, id_rol, permiso):
+        """
+        Remove a permission from a taxpayer's role.
 
-        :param int idRol:
-            Identificador único del rol.
+        :param id_rol: Unique identifier of the role.
+        :type id_rol: int
 
-        :param str permiso:
-            Permiso que se desea remover.
+        :param permiso: Name of the permission to remove.
+        :type permiso: str
 
-        :return:
-            Respuesta JSON con el rol modificado.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the updated role.
+        :rtype: dict
+        """
         url = '/contribuyentes/roles/%(rol)s/%(permiso)s' % {
-            'rol': idRol,
+            'rol': id_rol,
             'permiso': permiso
         }
 

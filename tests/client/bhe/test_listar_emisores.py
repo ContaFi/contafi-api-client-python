@@ -17,36 +17,62 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing BHE emitters."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bhe import Bhe
 
+
 class TestListarEmisores(TestCase):
-    '''
-    Clase de pruebas para listar emisores asociados a BHEs recibidas.
-    '''
+
+    """
+    Test case for listing BHE issuers (emitted by third parties).
+
+    This test verifies that the `listar_emisores()` method of the `Bhe` client
+    returns a valid list of issuers associated with received BHEs.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running tests.
+
+        Initializes the `Bhe` client and enables verbose logging if
+        `TEST_VERBOSE=1` is set in the environment.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bhe()
 
-    def testListarEmisores(self):
-        '''
-        Método de test para probar el recurso de listar emisores asociados a
-        BHEs recibidas.
-        '''
-        nuevos = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+    def test_listar_emisores(self):
+        """
+        Test the BHE issuer listing endpoint using a period parameter.
+
+        This test:
+        - Uses the `TEST_PERIODO` environment variable, or defaults to the
+        current UTC month in `YYYYMM` format.
+        - Calls `listar_emisores()` to retrieve issuer data.
+        - Asserts that the call succeeds and prints the result if verbose mode
+        is enabled.
+
+        :raises AssertionError: If the API call fails or raises an exception.
+        """
+        nuevos = getenv('TEST_PERIODO', datetime.now(UTC).strftime('%Y%m'))
 
         try:
-            # Listado de Emisores.
-            listaEmisores = self.client.listarEmisores(nuevos)
+            # List of issuers.
+            lista_emisores = self.client.listar_emisores(nuevos)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestListarEmisores() Emisores: ', listaEmisores, '\n')
+                print(
+                    '\ntest_listar_emisores() Emisores: ',
+                    lista_emisores,
+                    '\n'
+                )
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

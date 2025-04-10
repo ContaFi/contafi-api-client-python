@@ -19,10 +19,10 @@ Si quieres ejecutar una prueba específica, deberás especificar el nombre y rut
 
 .. code:: shell
 
-    python3 tests/run.py client.bte.test_emitir_bhe.TestEmitirBte
+    python3 tests/run.py client.bte.test_emitir_bhe.test_emitir_bte
 
 Para ejecutar otros ejemplos, debes reemplazar `test_emitir_bte` por el nombre de alguna de las otras pruebas descritas posteriormente. Además, si quieres ejecutar un test dentro de otra carpeta, como por ejemplo en `bhe`, deberás ejecutar el siguiente comando:
 
 .. code:: shell
 
-    python3 tests/run.py client.bte.test_listar_bhes.TestListarBhes
+    python3 tests/run.py client.bte.test_listar_bhes.test_listar_bhes

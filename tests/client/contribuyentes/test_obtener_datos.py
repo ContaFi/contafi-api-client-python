@@ -17,34 +17,50 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving detailed information about a contributor."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestObtenerDatos(TestCase):
-    '''
-    Clase de pruebas para obtener datos de un contribuyente específico.
-    '''
+
+    """Test case for retrieving detailed information about a contributor."""
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running the test.
+
+        Initializes:
+        - the Contribuyentes API client.
+        - verbosity setting.
+        - contributor RUT from `CONTAFI_CONTRIBUYENTE_RUT` or a fallback.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
         cls.rut = getenv('CONTAFI_CONTRIBUYENTE_RUT', '76192083-9')
 
-    def testObtenerEstadisticas(self):
-        '''
-        Método de test para probar el recurso de obtener datos de un
-        contribuyente específico.
-        '''
+    def test_obtener_datos(self):
+        """
+        Test the `datos()` method for retrieving data for a specific RUT.
 
+        Validates that a valid contributor response is returned.
+
+        If `TEST_VERBOSE=1`, the data is printed.
+
+        :raises AssertionError: If the contributor data is not
+        found or an error occurs.
+        """
         try:
             datos = self.client.datos(self.rut)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObtenerDatos() datos: ', datos, '\n')
+                print('\ntest_obtener_datos() datos: ', datos, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

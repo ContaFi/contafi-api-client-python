@@ -17,37 +17,59 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing remunerations (salaries) of the contributor."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.remuneraciones import Remuneraciones
 
+
 class TestListarRemuneraciones(TestCase):
-    '''
-    Clase de pruebas para listar remuneraciones del contribuyente.
-    '''
+
+    """
+    Test case for listing remunerations (salaries) of the contributor.
+
+    This test validates that the `Remuneraciones` API client successfully
+    retrieves salary records for the given taxpayer.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running the test method.
+
+        Initializes:
+        - the `Remuneraciones` API client.
+        - verbosity flag using the `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Remuneraciones()
 
-    def testListarRemuneraciones(self):
-        '''
-        Método de test para probar el recurso de listar remuneraciones del
-        contribuyente.
-        '''
-        periodo = getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+    def test_listar_remuneraciones(self):
+        """
+        Test the `listar_remuneraciones()` method using a given period.
+
+        Uses the `TEST_PERIODO` environment variable or defaults to thecurrent
+        UTC month (`YYYYMM`). Verifies that a valid response is returned.
+
+        If `TEST_VERBOSE=1`, the retrieved list of remunerations is printed.
+
+        :raises AssertionError: If the API call fails or returns an
+        invalid result.
+        """
+        periodo = getenv('TEST_PERIODO', datetime.now(UTC).strftime('%Y%m'))
 
         try:
-            remuneraciones = self.client.listarRemuneraciones(periodo)
+            remuneraciones = self.client.listar_remuneraciones(periodo)
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestListarRemuneraciones() Remuneraciones: ',
+                    '\test_listar_remuneraciones() Remuneraciones: ',
                     remuneraciones,
                     '\n'
                 )

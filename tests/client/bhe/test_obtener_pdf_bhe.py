@@ -17,63 +17,101 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving the PDF file of a BHE."""
 import os
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bhe import Bhe
 
+
 class TestObtenerPdfBhe(TestCase):
-    '''
-    Clase de pruebas para obtener los datos del PDF de una BHE recibida.
-    '''
+
+    """
+    Test case for retrieving the PDF data of a received BHE.
+
+    This test ensures that the `pdf()` method from the `Bhe` client
+    successfully returns a PDF file for a valid document, and that the
+    file is saved locally using a standardized naming convention.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running the tests.
+
+        Initializes:
+        - a `Bhe` API client instance.
+        - the document number (`TEST_NRO_BHE`) and issuer RUT (`TEST_EMISOR`)
+        from environment variables.
+        - the verbosity flag from `TEST_VERBOSE`.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bhe()
         cls.emisor = getenv('TEST_EMISOR', '')
         cls.numero = getenv('TEST_NRO_BHE', None)
 
-    def testObtenerPdfBhe(self):
-        '''
-        Método de test para probar el recurso de obtener datos del PDF de una
-        BHE recibida por el contribuyente.
-        '''
+    def test_obtener_pdf_bhe(self):
+        """
+        Test the PDF retrieval and export process for a received BHE.
 
+        If no issuer or document number is provided, the test fetches the
+        first BHE from the current period (from `TEST_PERIODO`) to use it
+        as input for the `pdf()` method.
+
+        The returned PDF is written to a file in the
+        `archivos/bhe_recibidas_pdf/` directory using the naming pattern:
+        `CONTAFI_<emisor>_<numero>.pdf`.
+
+        The test asserts that a valid binary PDF is returned.
+
+        If `TEST_VERBOSE=1`, the output path is printed to the console.
+
+        :raises AssertionError: If the API call fails or no PDF is returned.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             if self.numero is None and self.emisor == '':
-                listaBhes = self.client.listar(filtros)
-                listaFiltrada = listaBhes['results'][0]
+                lista_bhes = self.client.listar(filtros)
+                lista_filtrada = lista_bhes['results'][0]
 
-                emisorRut = listaFiltrada['emisor']['contribuyente']['rut']
-                emisorDv = listaFiltrada['emisor']['contribuyente']['dv']
-                self.numero = listaFiltrada['numero']
+                emisor_rut = lista_filtrada['emisor']['contribuyente']['rut']
+                emisor_dv = lista_filtrada['emisor']['contribuyente']['dv']
+                self.numero = lista_filtrada['numero']
 
                 self.emisor = '%(rut)s-%(dv)s' % {
-                    'rut': emisorRut,
-                    'dv': emisorDv
+                    'rut': emisor_rut,
+                    'dv': emisor_dv
                 }
 
-            # Descarga de datos para el PDF.
+            # Download data for the PDF.
             pdf = self.client.pdf(self.emisor, self.numero)
 
-            # Retrocede dos niveles para salir de 'client/bhe'
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            # Go back two levels to exit 'client/bhe'
+            base_dir = os.path.dirname(
+                os.path.dirname(os.path.dirname(__file__))
+            )
 
-            # Define la carpeta de destino correcta
-            output_dir = os.path.join(base_dir, 'archivos', 'bhe_recibidas_pdf')
+            # Define the correct destination folder
+            output_dir = os.path.join(
+                base_dir,
+                'archivos',
+                'bhe_recibidas_pdf'
+            )
 
-            # Crear la carpeta si no existe
+            # Create the folder if it doesn't exist
             os.makedirs(output_dir, exist_ok=True)
 
-            # Creación del la ruta generada y nombre del archivo con la siguiente
-            # nomenclatura:
+            # Create the file path and name with the following nomenclature:
             # CONTAFI_12345678-9_123.pdf
             filename = os.path.join(
                 output_dir,
@@ -83,13 +121,13 @@ class TestObtenerPdfBhe(TestCase):
                 }
             )
 
-            # Creación del archivo PDF usando la ruta, nombre y datos obtenidos.
+            # Create the PDF file using the path, name and data.
             with open(filename, 'wb') as f:
                 f.write(pdf)
 
             self.assertIsNotNone(pdf)
 
             if self.verbose:
-                print('\ntestObtenerPdfBhe() filename: ', filename,'\n')
+                print('\ntest_obtener_pdf_bhe() filename: ', filename,'\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

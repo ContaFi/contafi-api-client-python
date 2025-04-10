@@ -17,34 +17,58 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing BTE receivers."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestListarReceptores(TestCase):
-    '''
-    Clase de pruebas para listar receptores de BTEs emitidas.
-    '''
+
+    """
+    Test case for listing receivers of issued BTEs.
+
+    This test ensures that the `listar_receptores()` method from the
+    `Bte` client successfully retrieves the list of associated receivers.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before running the test.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity setting based on the `TEST_VERBOSE` environment variable.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
 
-    def testListarReceptores(self):
-        '''
-        Método de test para probar el recurso de listar receptores de BTEs
-        emitidas.
-        '''
+    def test_listar_receptores(self):
+        """
+        Test the `listar_receptores()` method for retrieving BTE receivers.
 
+        Verifies that the method executes without errors and retrieves
+        a valid list of receivers.
+
+        If `TEST_VERBOSE=1`, the result is printed to the console.
+
+        :raises AssertionError: If the API call fails or the result is invalid.
+        """
         try:
-            # Listado de receptores.
-            receptores = self.client.listarReceptores()
+            # List of receivers.
+            receptores = self.client.listar_receptores()
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestListarReceptores() receptores: ', receptores, '\n')
+                print(
+                    '\ntest_listar_receptores() receptores: ',
+                    receptores,
+                    '\n'
+                )
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

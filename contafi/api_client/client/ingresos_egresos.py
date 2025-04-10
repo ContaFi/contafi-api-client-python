@@ -17,45 +17,52 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Client for managing and listing monetary transactions (income/expenses)."""
 from .. import ApiBase
 
+
 class IngresosEgresos(ApiBase):
-    '''
-    Módulo que permite manejar y listar los movimientos de dinero efectuados.
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for managing and listing monetary transactions (income/expenses).
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    This class provides access to the list of money movements performed
+    or received by the taxpayer for a given period.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be retrieved from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base API URL. If not provided, a default will be used.
+    :type api_url: str
+
+    :param api_version: API version. If not provided, a default version
+                        will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception automatically
+                                on HTTP error responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the IngresosEgresos client instance.
+
+        Inherits configuration and HTTP behavior from the `ApiBase` class.
+        """
         super().__init__()
 
-    def listarMovimientos(self, periodo):
-        '''
-        Recurso que permite obtener el listado paginado de movimientos
-        (otros ingresos/egresos) del contribuyente.
+    def listar_movimientos(self, periodo):
+        """
+        Retrieve a paginated list of income/expense transactions for a period.
 
-        :param str periodo:
-            Periodo por el cual consultar los movimientos.
+        :param periodo: Period for which to retrieve the list of transactions.
+        :type periodo: str
 
-        :return:
-            Respuesta JSON con el listado de movimientos efectuados y recibidos.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with all performed and received movements.
+        :rtype: dict
+        """
         url = '/movimientos?periodo=%(periodo)s' % {'periodo': periodo}
 
         response = self.client.get(url)

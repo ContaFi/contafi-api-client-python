@@ -17,41 +17,60 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for removing a specific permission from a contributor role."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestQuitarPermiso(TestCase):
-    '''
-    Clase de pruebas para quitar un permiso a un rol.
-    '''
+
+    """
+    Test case for removing a specific permission from a contributor role.
+
+    Ensures that the `quitar_permiso_rol()` method properly removes
+    permissions from the given role ID.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Initialize the test environment and Contribuyentes API client.
+
+        Sets role ID from `TEST_ROL_ID` if available and enables verbosity.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
-        cls.rolId = getenv('TEST_ROL_ID', None)
+        cls.rol_id = getenv('TEST_ROL_ID', None)
 
-    def testQuitarPermiso(self):
-        '''
-        Método de test para probar el recurso de quitar un permiso específico
-        a un rol.
-        '''
+    def test_quitar_permiso(self):
+        """
+        Test the `quitar_permiso_rol()` method for removing a permission.
 
+        If no role is configured, retrieves the first  role
+        via `obtener_roles()`. Removes the `bhe_ver` permission.
+
+        If `TEST_VERBOSE=1`, prints the updated role data.
+
+        :raises AssertionError: If the API call fails or
+        permission is not removed.
+        """
         try:
-            if self.rolId is None:
-                roles = self.client.obtenerRoles()
+            if self.rol_id is None:
+                roles = self.client.obtener_roles()
 
-                self.rolId = roles[0]['id']
+                self.rol_id = roles[0]['id']
 
             permiso = 'bhe_ver'
 
-            rol = self.client.quitarPermisoRol(self.rolId, permiso)
+            rol = self.client.quitar_permiso_rol(self.rol_id, permiso)
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestQuitarPermiso() rol: ', rol, '\n')
+                print('\ntest_quitar_permiso() rol: ', rol, '\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

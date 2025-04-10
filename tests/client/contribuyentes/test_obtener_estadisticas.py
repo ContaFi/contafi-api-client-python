@@ -17,33 +17,51 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving contributor statistics."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.contribuyentes import Contribuyentes
 
+
 class TestObtenerEstadisticas(TestCase):
-    '''
-    Clase de pruebas para obtener estadísticas de un contribuyente.
-    '''
+
+    """Test case for retrieving contributor statistics."""
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Prepare the test environment for running statistics queries.
+
+        Initializes:
+        - the Contribuyentes API client.
+        - verbosity from environment variables.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Contribuyentes()
 
-    def testObtenerEstadisticas(self):
-        '''
-        Método de test para probar el recurso de obtener estadísticas de un
-        contribuyente.
-        '''
+    def test_obtener_estadisticas(self):
+        """
+        Test the `estadisticas()` method to retrieve contributor statistics.
 
+        Asserts that valid statistics data is returned.
+
+        If `TEST_VERBOSE=1`, the output is printed.
+
+        :raises AssertionError: If the request fails or response is invalid.
+        """
         try:
             estadisticas = self.client.estadisticas()
 
             self.assertTrue(True)
 
             if self.verbose:
-                print('\ntestObtenerEstadisticas() estadisticas: ', estadisticas, '\n')
+                print(
+                    '\ntest_obtener_estadisticas() estadisticas: ',
+                    estadisticas,
+                    '\n'
+                )
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

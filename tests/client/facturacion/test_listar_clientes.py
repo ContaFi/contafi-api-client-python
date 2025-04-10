@@ -17,36 +17,55 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing customers of issued sales DTEs."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.facturacion import Facturacion
 
+
 class TestListarClientes(TestCase):
-    '''
-    Clase de pruebas para listar clientes de ventas efectuadas.
-    '''
+
+    """
+    Test case for listing customers of issued sales DTEs.
+
+    Ensures that the `listar_clientes()` method of the Facturacion API client
+    returns a valid list of customers.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Prepare the test environment before executing test methods.
+
+        Initializes:
+        - the Facturacion API client.
+        - verbosity setting from `TEST_VERBOSE`.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Facturacion()
 
-    def testListarClientes(self):
-        '''
-        Método de test para probar el recurso de listar clientes de ventas
-        ya efectuadas por el contribuyente.
-        '''
+    def test_listar_clientes(self):
+        """
+        Test the `listar_clientes()` method for retrieving sales customers.
 
+        Asserts that the method completes successfully.
+
+        If `TEST_VERBOSE=1`, the list of customers is printed.
+
+        :raises AssertionError: If the call fails or returns no results.
+        """
         try:
-            listaClientes = self.client.listarClientes()
+            lista_clientes = self.client.listar_clientes()
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestListarClientes() Clientes: ',
-                    listaClientes,
+                    '\ntest_listar_clientes() Clientes: ',
+                    lista_clientes,
                     '\n'
                 )
         except ApiException as e:

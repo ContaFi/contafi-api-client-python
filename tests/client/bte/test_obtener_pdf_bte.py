@@ -17,55 +17,84 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for retrieving the PDF content of an issued BTE."""
 import os
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.bte import Bte
 
+
 class TestObtenerPdfBte(TestCase):
-    '''
-    Clase de pruebas para obtener el detalle del PDF de una BTE emitida.
-    '''
+
+    """
+    Test case for retrieving the PDF content of an issued BTE.
+
+    This test verifies that the `pdf()` method from the `Bte` client
+    returns a valid PDF file and that it is saved locally.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """
+        Set up the test environment before executing the test method.
+
+        Initializes:
+        - the BTE API client.
+        - verbosity setting from `TEST_VERBOSE`.
+        - the BTE number to be retrieved, from `TEST_NRO_BTE` if available.
+        """
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Bte()
         cls.numero = getenv('TEST_NRO_BTE', None)
 
-    def testObtenerPdfBte(self):
-        '''
-        Método de test para probar el recurso de obtener datos del PDF de una
-        BTE emitida por el contribuyente.
-        '''
+    def test_obtener_pdf_bte(self):
+        """
+        Test the `pdf()` method for retrieving the PDF content of a BTE.
 
+        If no document number is configured via environment variables,
+        the test retrieves the first available BTE from the current or
+        configured period.
+
+        The downloaded PDF is saved to `archivos/bte_emitidas_pdf/`
+        with the name `CONTAFI_BTE_<numero>.pdf`.
+
+        If `TEST_VERBOSE=1`, the file path is printed.
+
+        :raises AssertionError: If no PDF content is returned.
+        """
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             if self.numero is None:
-                listaBtes = self.client.listar(filtros)
-                listaFiltrada = listaBtes['results'][0]
+                lista_btes = self.client.listar(filtros)
+                lista_filtrada = lista_btes['results'][0]
 
-                self.numero = listaFiltrada['numero']
+                self.numero = lista_filtrada['numero']
 
-            # Descarga de datos para el PDF.
+            # Download data for the PDF.
             pdf = self.client.pdf(self.numero)
 
-            # Retrocede dos niveles para salir de 'client/bte'
-            base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+            # Go back two levels to exit 'client/bte'
+            base_dir = os.path.dirname(
+                os.path.dirname(os.path.dirname(__file__))
+            )
 
-            # Define la carpeta de destino correcta
+            # Define the correct destination folder
             output_dir = os.path.join(base_dir, 'archivos', 'bte_emitidas_pdf')
 
-            # Crear la carpeta si no existe
+            # Create the folder if it doesn't exist
             os.makedirs(output_dir, exist_ok=True)
 
-            # Creación del la ruta generada y nombre del archivo con la siguiente
-            # nomenclatura:
+            # Create the file path and name with the following nomenclature:
             # CONTAFI_BTE_123.pdf
             filename = os.path.join(
                 output_dir,
@@ -74,13 +103,13 @@ class TestObtenerPdfBte(TestCase):
                 }
             )
 
-            # Creación del archivo PDF usando la ruta, nombre y datos obtenidos.
+            # Create the PDF file using the path, name and data.
             with open(filename, 'wb') as f:
                 f.write(pdf)
 
             self.assertIsNotNone(pdf)
 
             if self.verbose:
-                print('\ntestObtenerPdfBte() filename: ', filename,'\n')
+                print('\ntest_obtener_pdf_bte() filename: ', filename,'\n')
         except ApiException as e:
             self.fail('ApiException: %(e)s' % {'e': e})

@@ -17,73 +17,83 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
-from .. import ApiBase
+"""Client for managing received Electronic Fee Receipts (BHE)."""
 from urllib.parse import urlencode
 
+from .. import ApiBase
+
+
 class Bhe(ApiBase):
-    '''
-    Módulo que permite gestionar BHEs recibidas.
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for managing received Electronic Fee Receipts (BHE).
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    Provides methods for listing, retrieving, observing, and downloading
+    received BHEs.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be retrieved from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base URL of the API. If not provided, a default
+                    URL will be used.
+    :type api_url: str
+
+    :param api_version: API version to use. If not specified, the default
+                        version will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception automatically
+                                for HTTP error responses (default: True).
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the Bhe client instance.
+
+        Inherits all configuration parameters from the base class `ApiBase`,
+        including authentication, API URL, and behavior on HTTP errors.
+        """
         super().__init__()
 
-    def listar(self, filtros = {}):
-        '''
-        Recurso que permite obtener el listado paginado de boletas de
-        honorarios electrónicas recibidas.
+    def listar(self, filtros = None):
+        """
+        List received Electronic Fee Receipts (BHEs) with optional filters.
 
-        :param dict filtros:
-            Filtros de búsqueda.
+        Fetches a paginated list of received BHEs based on the given filters.
 
-        :return:
-            Respuesta JSON con el listado de boletas emitidas.
+        :param filtros: Optional filters to apply to the query.
+        :type filtros: dict
 
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing the list of received BHEs.
+        :rtype: dict
+        """
+        if filtros is None:
+            filtros = {}
+
         url = '/bhe/boletas'
-
-        if len(filtros) > 0:
+        if filtros:
             query_string = urlencode(filtros)
-            url += '?%(query)s' % {'url': url, 'query': query_string}
+            url += '?%(query)s' % {'query': query_string}
 
         response = self.client.get(url)
 
         return response.json()
 
     def datos(self, emisor, numero):
-        '''
-        Recurso para obtener los datos de una boleta de honorarios
-        electrónica recibida.
+        """
+        Retrieve the details of a specific received BHE.
 
-        :param string emisor:
-            RUT del emisor de la BHE, sin puntos y con DV.
+        :param emisor: RUT of the BHE issuer (without dots, includes DV).
+        :type emisor: str
 
-        :param int numero:
-            Número de la BHE.
+        :param numero: BHE document number.
+        :type numero: int
 
-        :return:
-            Respuesta JSON con los datos de la BHE consultada.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing the BHE data.
+        :rtype: dict
+        """
         url = '/bhe/boletas/%(emisor)s/%(numero)s' % {
             'emisor': emisor, 'numero': numero
         }
@@ -92,58 +102,53 @@ class Bhe(ApiBase):
 
         return response.json()
 
-    def pdf(self, emisor, numero, filtros = {}):
-        '''
-        Recurso para obtener el PDF de una boleta de honorarios
-        electrónica recibida.
+    def pdf(self, emisor, numero, filtros = None):
+        """
+        Download the PDF of a specific received BHE.
 
-        :param string emisor:
-            RUT del emisor de la BHE, sin puntos y con DV.
+        :param emisor: RUT of the BHE issuer (without dots, includes DV).
+        :type emisor: str
 
-        :param int numero:
-            Número de la BHE.
+        :param numero: BHE document number.
+        :type numero: int
 
-        :param dict filtros:
-            Filtros adicionales (opcional).
+        :param filtros: Optional filters (e.g., options for download format).
+        :type filtros: dict
 
-        :return:
-            Respuesta JSON con los datos del PDF de la BHE consultada
+        :return: PDF file as a byte stream.
+        :rtype: bytes
+        """
+        if filtros is None:
+            filtros = {}
 
-        :rtype:
-            bytes
-        '''
         url = '/bhe/pdf/%(emisor)s/%(numero)s' % {
             'emisor': emisor, 'numero': numero
         }
 
-        if len(filtros) > 0:
+        if filtros:
             query_string = urlencode(filtros)
-            url += '?%(query)s' % {'url': url, 'query': query_string}
+            url += '?%(query)s' % {'query': query_string}
 
         response = self.client.get(url)
 
         return response.content
 
     def observar(self, emisor, numero, body):
-        '''
-        Recurso que permite observar una boleta de honorarios electrónica
-        previamente recibida.
+        """
+        Submit an observation to a previously received BHE.
 
-        :param string emisor:
-            RUT del emisor de la BHE, sin puntos y con DV.
+        :param emisor: RUT of the BHE issuer (without dots, includes DV).
+        :type emisor: str
 
-        :param int numero:
-            Número de la BHE.
+        :param numero: BHE document number.
+        :type numero: int
 
-        :param dict body:
-            Datos de la observación de la BHE (causa).
+        :param body: Dictionary containing the observation data (e.g., reason).
+        :type body: dict
 
-        :return:
-            Respuesta JSON con la BHE observada
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the updated BHE status.
+        :rtype: dict
+        """
         url = '/bhe/observar/%(emisor)s/%(numero)s' % {
             'emisor': emisor, 'numero': numero
         }
@@ -152,21 +157,17 @@ class Bhe(ApiBase):
 
         return response.json()
 
-    def listarEmisores(self, nuevos):
-        '''
-        Recurso que permite obtener el listado paginado de emisores asociados
-        a las BHE.
+    def listar_emisores(self, nuevos):
+        """
+        List all BHE issuers, optionally filtering by newly added ones.
 
-        :param string nuevos:
-            Emisores que ha emitido por primera vez una BHE en el
-            período indicado.
+        :param nuevos: Indicates if only issuers who sent a BHE for the first
+                    time in the period should be returned.
+        :type nuevos: str
 
-        :return:
-            Respuesta JSON con el listado de emisores.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing the list of issuers.
+        :rtype: dict
+        """
         url = '/bhe/emisores?nuevos=%(nuevos)s' % {
             'nuevos': nuevos
         }

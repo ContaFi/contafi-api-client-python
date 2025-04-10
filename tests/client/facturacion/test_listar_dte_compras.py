@@ -17,42 +17,58 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing purchase DTEs (compras) of the contributor."""
+from datetime import UTC, datetime
 from os import getenv
 from unittest import TestCase
-from datetime import datetime
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.facturacion import Facturacion
 
+
 class TestListarDteCompras(TestCase):
-    '''
-    Clase de pruebas para listar DTEs de compras del contribuyente.
-    '''
+
+    """
+    Test case for listing purchase DTEs (compras) of the contributor.
+
+    Validates that documents are properly returned for all available states.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """Initialize the Facturacion client and test verbosity."""
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Facturacion()
 
-    def testListarDteCompras(self):
-        '''
-        Método de test para probar el recurso de listar DTEs de compras
-        del contribuyente.
-        '''
+    def test_listar_dte_compras(self):
+        """
+        Test the `listar_compras()` method across various states (1 to 4).
 
+        The search uses a period from `TEST_PERIODO` or defaults to
+        current month.
+
+        If `TEST_VERBOSE=1`, prints the list of purchases for each state.
+
+        :raises AssertionError: If any request fails or no data is returned.
+        """
         estados = [1, 2, 3, 4]
         filtros = {
-            'periodo': getenv('TEST_PERIODO', datetime.now().strftime('%Y%m'))
+            'periodo': getenv(
+                'TEST_PERIODO',
+                datetime.now(UTC).strftime('%Y%m')
+            )
         }
 
         try:
             for estado in estados:
-                response = self.client.listarCompras(estado, filtros)
+                response = self.client.listar_compras(estado, filtros)
 
                 self.assertTrue(True)
 
                 if self.verbose:
                     print(
-                        '\ntestListarDteCompras() Compras (%(est)s): ' % {
+                        '\ntest_listar_dte_compras() Compras (%(est)s): ' % {
                             'est': estado
                         },
                         response,

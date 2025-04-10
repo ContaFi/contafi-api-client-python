@@ -12,25 +12,25 @@ El siguiente es un ejemplo básico de cómo emitir una BTE utilizando el cliente
 .. code-block:: python
 
     # Importaciones del cliente de API de ContaFi.
-    from datetime import datetime
+    from datetime import datetime, UTC
     from contafi.api_client import ApiException
     from contafi.api_client.client.bte import Bte
 
     # Instancia de cliente.
     client = Bte()
     # RUT del emisor.
-    rutEmisor = "12345678-9"
+    rut_emisor = "12345678-9"
     # Fecha de emisión de BHE.
-    fechaEmis = datetime.now().strftime('%Y-%m-%d')
+    fecha_emis = datetime.now().strftime('%Y-%m-%d')
 
     # Datos de la boleta a ser emitida.
-    datosBte = {
+    datos_bte = {
         'Encabezado': {
             'IdDoc': {
-                'FchEmis' : fechaEmis,
+                'FchEmis' : fecha_emis,
             },
             'Emisor': {
-                'RUTEmisor' : rutEmisor,
+                'RUTEmisor' : rut_emisor,
             },
             'Receptor': {
                 'RUTRecep' : '66666666-6',
@@ -52,7 +52,7 @@ El siguiente es un ejemplo básico de cómo emitir una BTE utilizando el cliente
     }
 
     # Respuesta de solicitud HTTP (POST) de emisión de boleta.
-    response =  client.emitir(datos)
+    response =  client.emitir(datos_bte)
 
     # Despliegue del resultado.
     print("\nEMISION BOLETA: \n")

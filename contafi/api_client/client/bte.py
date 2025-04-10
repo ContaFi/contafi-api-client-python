@@ -17,89 +17,94 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
-from .. import ApiBase
+"""Client for managing issued Third-Party Electronic Receipts (BTEs)."""
 from urllib.parse import urlencode
 
+from .. import ApiBase
+
+
 class Bte(ApiBase):
-    '''
-    Módulo que permite gestionar BTEs emitidas.
 
-    :param str api_token:
-        Token de autenticación del usuario. Si no se proporciona, se
-        intentará obtener de una variable de entorno.
+    """
+    Module for managing issued Third-Party Electronic Receipts (BTEs).
 
-    :param str api_url:
-        URL base de la API. Si no se proporciona, se usará una URL por defecto.
+    This class provides methods for issuing, retrieving, canceling, and
+    calculating BTEs, as well as listing related receivers.
 
-    :param str api_version:
-        Versión de la API. Si no se proporciona, se usará una versión
-        por defecto.
+    :param api_token: User authentication token. If not provided, it will
+                    be read from an environment variable.
+    :type api_token: str
 
-    :param bool api_raise_for_status:
-        Si se debe lanzar una excepción automáticamente para respuestas
-        de error HTTP. Por defecto es True.
-    '''
+    :param api_url: Base API URL. If not provided, a default will be used.
+    :type api_url: str
+
+    :param api_version: API version. If not provided, a default version
+                        will be used.
+    :type api_version: str
+
+    :param api_raise_for_status: Whether to raise an exception on HTTP error
+                                responses. Defaults to True.
+    :type api_raise_for_status: bool
+    """
 
     def __init__(self):
+        """
+        Initialize the Bte client instance.
+
+        Inherits all configuration parameters from the `ApiBase` class,
+        including authentication, API URL, and HTTP error handling.
+        """
         super().__init__()
 
     def emitir(self, body):
-        '''
-        Recurso que permite emitir una BTE.
+        """
+        Issue a new BTE.
 
-        :param dict body:
-            Datos de la BTE a emitir.
+        :param body: Dictionary containing the BTE data to be issued.
+        :type body: dict
 
-        :return:
-            Respuesta JSON con la BTE emitida.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the issued BTE.
+        :rtype: dict
+        """
         url = '/bte/emitir'
 
         response = self.client.post(url, body)
 
         return response.json()
 
-    def listar(self, filtros = {}):
-        '''
-        Recurso que permite obtener el listado paginado de boletas de terceros
-        electrónicas emitidas.
+    def listar(self, filtros = None):
+        """
+        Retrieve a paginated list of issued BTEs.
 
-        :param dict filtros:
-            Filtros adicionales (opcional).
+        :param filtros: Optional filters to apply (e.g., by period, RUT).
+        :type filtros: dict
 
-        :return:
-            Respuesta JSON con el listado de BTEs emitidas.
+        :return: JSON response containing the list of issued BTEs.
+        :rtype: dict
+        """
+        if filtros is None:
+            filtros = {}
 
-        :rtype:
-            dict
-        '''
         url = '/bte/boletas'
 
-        if len(filtros) > 0:
+        if filtros:
             query_string = urlencode(filtros)
-            url += '?%(query)s' % {'url': url, 'query': query_string}
+            url += '?%(query)s' % {'query': query_string}
 
         response = self.client.get(url)
 
         return response.json()
 
     def datos(self, numero):
-        '''
-        Recurso para obtener los datos de una boleta de terceros electrónica
-        emitida.
+        """
+        Retrieve the data of a specific issued BTE.
 
-        :param int numero:
-            Número de la BTE a consultar.
+        :param numero: BTE document number.
+        :type numero: int
 
-        :return:
-            Respuesta JSON con los datos de la BTE.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the BTE data.
+        :rtype: dict
+        """
         url = '/bte/boletas/%(numero)s' % {'numero': numero}
 
         response = self.client.get(url)
@@ -107,19 +112,15 @@ class Bte(ApiBase):
         return response.json()
 
     def html(self, numero):
-        '''
-        Recurso para obtener el HTML de una boleta de terceros electrónica
-        emitida.
+        """
+        Retrieve the HTML representation of a specific BTE.
 
-        :param int numero:
-            Número de la BTE a consultar.
+        :param numero: BTE document number.
+        :type numero: int
 
-        :return:
-            Respuesta con el contenido del HTML de la BTE en bytes.
-
-        :rtype:
-            bytes
-        '''
+        :return: HTML content of the BTE as bytes.
+        :rtype: bytes
+        """
         url = '/bte/html/%(numero)s' % {'numero': numero}
 
         response = self.client.get(url)
@@ -127,19 +128,15 @@ class Bte(ApiBase):
         return response.content
 
     def pdf(self, numero):
-        '''
-        Recurso para obtener el PDF de una boleta de terceros electrónica
-        emitida.
+        """
+        Retrieve the PDF file of a specific BTE.
 
-        :param int numero:
-            Número de la BTE a consultar.
+        :param numero: BTE document number.
+        :type numero: int
 
-        :return:
-            Respuesta con el contenido del PDF de la BTE en bytes.
-
-        :rtype:
-            bytes
-        '''
+        :return: PDF file of the BTE as bytes.
+        :rtype: bytes
+        """
         url = '/bte/pdf/%(numero)s' % {'numero': numero}
 
         response = self.client.get(url)
@@ -147,44 +144,37 @@ class Bte(ApiBase):
         return response.content
 
     def anular(self, numero, body):
-        '''
-        Recurso que permite anular una boleta de terceros electrónica
-        previamente emitida.
+        """
+        Cancel a previously issued BTE.
 
-        :param int numero:
-            Número de la BTE a anular.
+        :param numero: BTE document number to cancel.
+        :type numero: int
 
-        :param dict body:
-            Datos a entregar (causa de anulación).
+        :param body: Dictionary containing cancellation data (e.g., reason).
+        :type body: dict
 
-        :return:
-            Respuesta JSON con el contenido la BTE anulada.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the canceled BTE data.
+        :rtype: dict
+        """
         url = '/bte/anular/%(numero)s' % {'numero': numero}
 
         response = self.client.post(url, body)
 
         return response.json()
 
-    def calcularMontoLiquido(self, bruto, periodo):
-        '''
-        Recurso que permite calcular el monto líquido a partir del monto bruto.
+    def calcular_monto_liquido(self, bruto, periodo):
+        """
+        Calculate the net amount (monto líquido) from a gross amount.
 
-        :param int bruto:
-            Monto bruto a convertir.
+        :param bruto: Gross amount to convert.
+        :type bruto: int
 
-        :param str periodo:
-            Periodo a considerar para la conversión.
+        :param periodo: Period used for the conversion.
+        :type periodo: str
 
-        :return:
-            Respuesta JSON con el valor líquido calculado.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the calculated net value.
+        :rtype: dict
+        """
         url = '/bte/liquido/%(bruto)s/%(periodo)s' % {
             'bruto': bruto,
             'periodo': periodo
@@ -194,22 +184,19 @@ class Bte(ApiBase):
 
         return response.json()
 
-    def calcularMontoBruto(self, liquido, periodo):
-        '''
-        Recurso que permite calcular el monto bruto a partir del monto líquido.
+    def calcular_monto_bruto(self, liquido, periodo):
+        """
+        Calculate the gross amount (monto bruto) from a net amount.
 
-        :param int bruto:
-            Monto líquido a convertir.
+        :param liquido: Net amount to convert.
+        :type liquido: int
 
-        :param str periodo:
-            Periodo a considerar para la conversión.
+        :param periodo: Period used for the conversion.
+        :type periodo: str
 
-        :return:
-            Respuesta JSON con el valor bruto calculado.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response with the calculated gross value.
+        :rtype: dict
+        """
         url = '/bte/bruto/%(liquido)s/%(periodo)s' % {
             'liquido': liquido,
             'periodo': periodo
@@ -219,17 +206,13 @@ class Bte(ApiBase):
 
         return response.json()
 
-    def listarReceptores(self):
-        '''
-        Recurso que permite obtener el listado paginado de receptores
-        asociados a las BTE.
+    def listar_receptores(self):
+        """
+        List all receivers associated with issued BTEs.
 
-        :return:
-            Respuesta JSON con los receptores asociados a las BTE.
-
-        :rtype:
-            dict
-        '''
+        :return: JSON response containing receiver information.
+        :rtype: dict
+        """
         url = '/bte/receptores'
 
         response = self.client.get(url)

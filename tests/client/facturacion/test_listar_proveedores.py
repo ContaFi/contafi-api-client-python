@@ -17,36 +17,46 @@
 # <http://www.gnu.org/licenses/lgpl.html>.
 #
 
+"""Unit tests for listing suppliers from purchase DTEs."""
 from os import getenv
 from unittest import TestCase
+
 from contafi.api_client import ApiException
 from contafi.api_client.client.facturacion import Facturacion
 
+
 class TestListarProveedores(TestCase):
-    '''
-    Clase de pruebas para listar proveedores de compras efectuadas.
-    '''
+
+    """
+    Test case for listing suppliers from purchase DTEs.
+
+    Confirms that the `listar_proveedores()` method works as expected.
+    """
+
     @classmethod
     def setUpClass(cls):
-        # Variables base
-        cls.verbose = bool(int(getenv('TEST_VERBOSE', 0)))
+        """Set up the API client and verbosity flag for the test."""
+        # Base variables.
+        cls.verbose = bool(int(getenv('TEST_VERBOSE', "0")))
         cls.client = Facturacion()
 
-    def testListarProveedores(self):
-        '''
-        Método de test para probar el recurso de listar proveedores de compras
-        ya efectuadas por el contribuyente.
-        '''
+    def test_listar_proveedores(self):
+        """
+        Test the `listar_proveedores()` method for retrieving supplier data.
 
+        If `TEST_VERBOSE=1`, prints the list of suppliers.
+
+        :raises AssertionError: If the API call fails or returns no data.
+        """
         try:
-            listaProveedores = self.client.listarProveedores()
+            lista_proveedores = self.client.listar_proveedores()
 
             self.assertTrue(True)
 
             if self.verbose:
                 print(
-                    '\ntestListarProveedores() Proveedores: ',
-                    listaProveedores,
+                    '\ntest_listar_proveedores() Proveedores: ',
+                    lista_proveedores,
                     '\n'
                 )
         except ApiException as e:
