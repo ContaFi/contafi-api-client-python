@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>contafi.api_client.client package &mdash; documentación de contafi - 1.0.1</title>
+  <title>contafi.api_client.client package &mdash; documentación de contafi - 2.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=92bc2f6d"></script>
+      <script src="_static/documentation_options.js?v=ea25ecff"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/translations.js?v=f85f4cfb"></script>
@@ -95,38 +95,41 @@
 </section>
 <section id="module-contafi.api_client.client.bhe">
 <span id="contafi-api-client-client-bhe-module"></span><h2>contafi.api_client.client.bhe module<a class="headerlink" href="#module-contafi.api_client.client.bhe" title="Link to this heading"></a></h2>
+<p>Client for managing received Electronic Fee Receipts (BHE).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.bhe.</span></span><span class="sig-name descname"><span class="pre">Bhe</span></span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite gestionar BHEs recibidas.</p>
+<p>Module for managing received Electronic Fee Receipts (BHE).</p>
+<p>Provides methods for listing, retrieving, observing, and downloading
+received BHEs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be retrieved from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base URL of the API. If not provided, a default
+URL will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version to use. If not specified, the default
+version will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception automatically
+for HTTP error responses (default: True).</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.datos">
 <span class="sig-name descname"><span class="pre">datos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emisor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.datos" title="Link to this definition"></a></dt>
-<dd><p>Recurso para obtener los datos de una boleta de honorarios
-electrónica recibida.</p>
+<dd><p>Retrieve the details of a specific received BHE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>emisor</strong> (<em>string</em>) – RUT del emisor de la BHE, sin puntos y con DV.</p></li>
-<li><p><strong>numero</strong> (<em>int</em>) – Número de la BHE.</p></li>
+<li><p><strong>emisor</strong> (<em>str</em>) – RUT of the BHE issuer (without dots, includes DV).</p></li>
+<li><p><strong>numero</strong> (<em>int</em>) – BHE document number.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con los datos de la BHE consultada.</p>
+<dd class="field-even"><p>JSON response containing the BHE data.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -136,15 +139,15 @@ electrónica recibida.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.listar">
-<span class="sig-name descname"><span class="pre">listar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.listar" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de boletas de
-honorarios electrónicas recibidas.</p>
+<span class="sig-name descname"><span class="pre">listar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.listar" title="Link to this definition"></a></dt>
+<dd><p>List received Electronic Fee Receipts (BHEs) with optional filters.</p>
+<p>Fetches a paginated list of received BHEs based on the given filters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Filtros de búsqueda.</p>
+<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Optional filters to apply to the query.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado de boletas emitidas.</p>
+<dd class="field-even"><p>JSON response containing the list of received BHEs.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -153,17 +156,16 @@ honorarios electrónicas recibidas.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.listarEmisores">
-<span class="sig-name descname"><span class="pre">listarEmisores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuevos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.listarEmisores" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de emisores asociados
-a las BHE.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.listar_emisores">
+<span class="sig-name descname"><span class="pre">listar_emisores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuevos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.listar_emisores" title="Link to this definition"></a></dt>
+<dd><p>List all BHE issuers, optionally filtering by newly added ones.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nuevos</strong> (<em>string</em>) – Emisores que ha emitido por primera vez una BHE en el
-período indicado.</p>
+<dd class="field-odd"><p><strong>nuevos</strong> (<em>str</em>) – Indicates if only issuers who sent a BHE for the first
+time in the period should be returned.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado de emisores.</p>
+<dd class="field-even"><p>JSON response containing the list of issuers.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -174,18 +176,17 @@ período indicado.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.observar">
 <span class="sig-name descname"><span class="pre">observar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emisor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.observar" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite observar una boleta de honorarios electrónica
-previamente recibida.</p>
+<dd><p>Submit an observation to a previously received BHE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>emisor</strong> (<em>string</em>) – RUT del emisor de la BHE, sin puntos y con DV.</p></li>
-<li><p><strong>numero</strong> (<em>int</em>) – Número de la BHE.</p></li>
-<li><p><strong>body</strong> (<em>dict</em>) – Datos de la observación de la BHE (causa).</p></li>
+<li><p><strong>emisor</strong> (<em>str</em>) – RUT of the BHE issuer (without dots, includes DV).</p></li>
+<li><p><strong>numero</strong> (<em>int</em>) – BHE document number.</p></li>
+<li><p><strong>body</strong> (<em>dict</em>) – Dictionary containing the observation data (e.g., reason).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con la BHE observada</p>
+<dd class="field-even"><p>JSON response with the updated BHE status.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -195,19 +196,18 @@ previamente recibida.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bhe.Bhe.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emisor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.pdf" title="Link to this definition"></a></dt>
-<dd><p>Recurso para obtener el PDF de una boleta de honorarios
-electrónica recibida.</p>
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emisor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bhe.Bhe.pdf" title="Link to this definition"></a></dt>
+<dd><p>Download the PDF of a specific received BHE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>emisor</strong> (<em>string</em>) – RUT del emisor de la BHE, sin puntos y con DV.</p></li>
-<li><p><strong>numero</strong> (<em>int</em>) – Número de la BHE.</p></li>
-<li><p><strong>filtros</strong> (<em>dict</em>) – Filtros adicionales (opcional).</p></li>
+<li><p><strong>emisor</strong> (<em>str</em>) – RUT of the BHE issuer (without dots, includes DV).</p></li>
+<li><p><strong>numero</strong> (<em>int</em>) – BHE document number.</p></li>
+<li><p><strong>filtros</strong> (<em>dict</em>) – Optional filters (e.g., options for download format).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con los datos del PDF de la BHE consultada</p>
+<dd class="field-even"><p>PDF file as a byte stream.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bytes</p>
@@ -220,38 +220,40 @@ electrónica recibida.</p>
 </section>
 <section id="module-contafi.api_client.client.bte">
 <span id="contafi-api-client-client-bte-module"></span><h2>contafi.api_client.client.bte module<a class="headerlink" href="#module-contafi.api_client.client.bte" title="Link to this heading"></a></h2>
+<p>Client for managing issued Third-Party Electronic Receipts (BTEs).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.bte.</span></span><span class="sig-name descname"><span class="pre">Bte</span></span><a class="headerlink" href="#contafi.api_client.client.bte.Bte" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite gestionar BTEs emitidas.</p>
+<p>Module for managing issued Third-Party Electronic Receipts (BTEs).</p>
+<p>This class provides methods for issuing, retrieving, canceling, and
+calculating BTEs, as well as listing related receivers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be read from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base API URL. If not provided, a default will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version. If not provided, a default version
+will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception on HTTP error
+responses. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.anular">
 <span class="sig-name descname"><span class="pre">anular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numero</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.anular" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite anular una boleta de terceros electrónica
-previamente emitida.</p>
+<dd><p>Cancel a previously issued BTE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>numero</strong> (<em>int</em>) – Número de la BTE a anular.</p></li>
-<li><p><strong>body</strong> (<em>dict</em>) – Datos a entregar (causa de anulación).</p></li>
+<li><p><strong>numero</strong> (<em>int</em>) – BTE document number to cancel.</p></li>
+<li><p><strong>body</strong> (<em>dict</em>) – Dictionary containing cancellation data (e.g., reason).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el contenido la BTE anulada.</p>
+<dd class="field-even"><p>JSON response with the canceled BTE data.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -260,18 +262,18 @@ previamente emitida.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.calcularMontoBruto">
-<span class="sig-name descname"><span class="pre">calcularMontoBruto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liquido</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.calcularMontoBruto" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite calcular el monto bruto a partir del monto líquido.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.calcular_monto_bruto">
+<span class="sig-name descname"><span class="pre">calcular_monto_bruto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liquido</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.calcular_monto_bruto" title="Link to this definition"></a></dt>
+<dd><p>Calculate the gross amount (monto bruto) from a net amount.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bruto</strong> (<em>int</em>) – Monto líquido a convertir.</p></li>
-<li><p><strong>periodo</strong> (<em>str</em>) – Periodo a considerar para la conversión.</p></li>
+<li><p><strong>liquido</strong> (<em>int</em>) – Net amount to convert.</p></li>
+<li><p><strong>periodo</strong> (<em>str</em>) – Period used for the conversion.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el valor bruto calculado.</p>
+<dd class="field-even"><p>JSON response with the calculated gross value.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -280,18 +282,18 @@ previamente emitida.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.calcularMontoLiquido">
-<span class="sig-name descname"><span class="pre">calcularMontoLiquido</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bruto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.calcularMontoLiquido" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite calcular el monto líquido a partir del monto bruto.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.calcular_monto_liquido">
+<span class="sig-name descname"><span class="pre">calcular_monto_liquido</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bruto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.calcular_monto_liquido" title="Link to this definition"></a></dt>
+<dd><p>Calculate the net amount (monto líquido) from a gross amount.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bruto</strong> (<em>int</em>) – Monto bruto a convertir.</p></li>
-<li><p><strong>periodo</strong> (<em>str</em>) – Periodo a considerar para la conversión.</p></li>
+<li><p><strong>bruto</strong> (<em>int</em>) – Gross amount to convert.</p></li>
+<li><p><strong>periodo</strong> (<em>str</em>) – Period used for the conversion.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el valor líquido calculado.</p>
+<dd class="field-even"><p>JSON response with the calculated net value.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -302,14 +304,13 @@ previamente emitida.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.datos">
 <span class="sig-name descname"><span class="pre">datos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.datos" title="Link to this definition"></a></dt>
-<dd><p>Recurso para obtener los datos de una boleta de terceros electrónica
-emitida.</p>
+<dd><p>Retrieve the data of a specific issued BTE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – Número de la BTE a consultar.</p>
+<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – BTE document number.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con los datos de la BTE.</p>
+<dd class="field-even"><p>JSON response with the BTE data.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -320,13 +321,13 @@ emitida.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.emitir">
 <span class="sig-name descname"><span class="pre">emitir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.emitir" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite emitir una BTE.</p>
+<dd><p>Issue a new BTE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Datos de la BTE a emitir.</p>
+<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Dictionary containing the BTE data to be issued.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con la BTE emitida.</p>
+<dd class="field-even"><p>JSON response with the issued BTE.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -337,14 +338,13 @@ emitida.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.html">
 <span class="sig-name descname"><span class="pre">html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.html" title="Link to this definition"></a></dt>
-<dd><p>Recurso para obtener el HTML de una boleta de terceros electrónica
-emitida.</p>
+<dd><p>Retrieve the HTML representation of a specific BTE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – Número de la BTE a consultar.</p>
+<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – BTE document number.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta con el contenido del HTML de la BTE en bytes.</p>
+<dd class="field-even"><p>HTML content of the BTE as bytes.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bytes</p>
@@ -354,15 +354,14 @@ emitida.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.listar">
-<span class="sig-name descname"><span class="pre">listar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.listar" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de boletas de terceros
-electrónicas emitidas.</p>
+<span class="sig-name descname"><span class="pre">listar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.listar" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of issued BTEs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Filtros adicionales (opcional).</p>
+<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Optional filters to apply (e.g., by period, RUT).</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado de BTEs emitidas.</p>
+<dd class="field-even"><p>JSON response containing the list of issued BTEs.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -371,13 +370,12 @@ electrónicas emitidas.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.listarReceptores">
-<span class="sig-name descname"><span class="pre">listarReceptores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.listarReceptores" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de receptores
-asociados a las BTE.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.listar_receptores">
+<span class="sig-name descname"><span class="pre">listar_receptores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.listar_receptores" title="Link to this definition"></a></dt>
+<dd><p>List all receivers associated with issued BTEs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Respuesta JSON con los receptores asociados a las BTE.</p>
+<dd class="field-odd"><p>JSON response containing receiver information.</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -388,14 +386,13 @@ asociados a las BTE.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.bte.Bte.pdf">
 <span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numero</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.bte.Bte.pdf" title="Link to this definition"></a></dt>
-<dd><p>Recurso para obtener el PDF de una boleta de terceros electrónica
-emitida.</p>
+<dd><p>Retrieve the PDF file of a specific BTE.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – Número de la BTE a consultar.</p>
+<dd class="field-odd"><p><strong>numero</strong> (<em>int</em>) – BTE document number.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta con el contenido del PDF de la BTE en bytes.</p>
+<dd class="field-even"><p>PDF file of the BTE as bytes.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bytes</p>
@@ -408,35 +405,37 @@ emitida.</p>
 </section>
 <section id="module-contafi.api_client.client.contribuyentes">
 <span id="contafi-api-client-client-contribuyentes-module"></span><h2>contafi.api_client.client.contribuyentes module<a class="headerlink" href="#module-contafi.api_client.client.contribuyentes" title="Link to this heading"></a></h2>
+<p>Client for managing taxpayers, including roles and permissions.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.contribuyentes.</span></span><span class="sig-name descname"><span class="pre">Contribuyentes</span></span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite gestionar contribuyentes en ContaFi, junto con los
-roles y permisos disponibles.</p>
+<p>Module for managing taxpayers in ContaFi, including roles and permissions.</p>
+<p>Provides methods for querying taxpayer data, managing authorized users,
+and modifying role-based permissions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be read from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base API URL. If not provided, a default will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version to use. If not specified, a default
+version will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception on HTTP error
+responses. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.agregarPermisoRol">
-<span class="sig-name descname"><span class="pre">agregarPermisoRol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.agregarPermisoRol" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite agregar permisos a un rol.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.agregar_permiso_rol">
+<span class="sig-name descname"><span class="pre">agregar_permiso_rol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.agregar_permiso_rol" title="Link to this definition"></a></dt>
+<dd><p>Add one or more permissions to a role.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Datos que incluyen el rol a modificar y sus permisos.</p>
+<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Dictionary with role ID and permissions to add.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el rol modificado.</p>
+<dd class="field-even"><p>JSON response with the updated role.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -445,16 +444,15 @@ de error HTTP. Por defecto es True.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.agregarUsuarioAutorizado">
-<span class="sig-name descname"><span class="pre">agregarUsuarioAutorizado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.agregarUsuarioAutorizado" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite autorizar un usuario con cierto rol en un
-contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.agregar_usuario_autorizado">
+<span class="sig-name descname"><span class="pre">agregar_usuario_autorizado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.agregar_usuario_autorizado" title="Link to this definition"></a></dt>
+<dd><p>Authorize a user for the taxpayer with a specific role.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Datos como el nombre de usuario y rol a asignar.</p>
+<dd class="field-odd"><p><strong>body</strong> (<em>dict</em>) – Dictionary containing username and role to assign.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con la información del usuario autorizado.</p>
+<dd class="field-even"><p>JSON response with the authorized user information.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -465,14 +463,13 @@ contribuyente.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.datos">
 <span class="sig-name descname"><span class="pre">datos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rut</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.datos" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener los datos de un contribuyente a
-partir de su RUT.</p>
+<dd><p>Retrieve taxpayer information based on RUT.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rut</strong> (<em>str</em>) – RUT del contribuyente a consultar, sin puntos y con DV.</p>
+<dd class="field-odd"><p><strong>rut</strong> (<em>str</em>) – Taxpayer’s RUT (without dots, includes DV).</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con los datos del contribuyente.</p>
+<dd class="field-even"><p>JSON response with taxpayer details.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -483,11 +480,10 @@ partir de su RUT.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.estadisticas">
 <span class="sig-name descname"><span class="pre">estadisticas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.estadisticas" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener la estadística de un contribuyente a
-partir de su RUT.</p>
+<dd><p>Retrieve statistics for the current taxpayer (based on RUT).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Respuesta JSON con las estadísticas.</p>
+<dd class="field-odd"><p>JSON response containing taxpayer statistics.</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -496,12 +492,12 @@ partir de su RUT.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.obtenerRoles">
-<span class="sig-name descname"><span class="pre">obtenerRoles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.obtenerRoles" title="Link to this definition"></a></dt>
-<dd><p>Recurso que entrega los roles de un contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.obtener_roles">
+<span class="sig-name descname"><span class="pre">obtener_roles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.obtener_roles" title="Link to this definition"></a></dt>
+<dd><p>Retrieve the list of roles available for the taxpayer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Respuesta JSON con el detalle de cada rol.</p>
+<dd class="field-odd"><p>JSON response with the role definitions.</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -510,19 +506,18 @@ partir de su RUT.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.quitarPermisoRol">
-<span class="sig-name descname"><span class="pre">quitarPermisoRol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idRol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permiso</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.quitarPermisoRol" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite quitar un permiso asociado a un rol de un
-contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.quitar_permiso_rol">
+<span class="sig-name descname"><span class="pre">quitar_permiso_rol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_rol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permiso</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.quitar_permiso_rol" title="Link to this definition"></a></dt>
+<dd><p>Remove a permission from a taxpayer’s role.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>idRol</strong> (<em>int</em>) – Identificador único del rol.</p></li>
-<li><p><strong>permiso</strong> (<em>str</em>) – Permiso que se desea remover.</p></li>
+<li><p><strong>id_rol</strong> (<em>int</em>) – Unique identifier of the role.</p></li>
+<li><p><strong>permiso</strong> (<em>str</em>) – Name of the permission to remove.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el rol modificado.</p>
+<dd class="field-even"><p>JSON response with the updated role.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -531,19 +526,18 @@ contribuyente.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.quitarUsuarioAutorizado">
-<span class="sig-name descname"><span class="pre">quitarUsuarioAutorizado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usuario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.quitarUsuarioAutorizado" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite quitar a un usuario con cierto rol en un
-contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.quitar_usuario_autorizado">
+<span class="sig-name descname"><span class="pre">quitar_usuario_autorizado</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usuario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.quitar_usuario_autorizado" title="Link to this definition"></a></dt>
+<dd><p>Remove an authorized user and role from the taxpayer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>usuario</strong> (<em>str</em>) – Nombre del usuario a remover.</p></li>
-<li><p><strong>rol</strong> (<em>int</em>) – Rol del usuario.</p></li>
+<li><p><strong>usuario</strong> (<em>str</em>) – Username to be removed.</p></li>
+<li><p><strong>rol</strong> (<em>int</em>) – Role ID assigned to the user.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con la información del usuario removido.</p>
+<dd class="field-even"><p>JSON response with information of the removed user.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -554,14 +548,13 @@ contribuyente.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="contafi.api_client.client.contribuyentes.Contribuyentes.sucursal">
 <span class="sig-name descname"><span class="pre">sucursal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sucursal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.contribuyentes.Contribuyentes.sucursal" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener los datos de una sucursal de un
-contribuyente a partir de su código.</p>
+<dd><p>Retrieve information for a specific taxpayer branch office.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sucursal</strong> (<em>int</em>) – ID de la sucursal a consultar.</p>
+<dd class="field-odd"><p><strong>sucursal</strong> (<em>int</em>) – Branch office ID.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con los datos de la sucursal.</p>
+<dd class="field-even"><p>JSON response with branch data.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -574,33 +567,34 @@ contribuyente a partir de su código.</p>
 </section>
 <section id="module-contafi.api_client.client.facturacion">
 <span id="contafi-api-client-client-facturacion-module"></span><h2>contafi.api_client.client.facturacion module<a class="headerlink" href="#module-contafi.api_client.client.facturacion" title="Link to this heading"></a></h2>
+<p>Client for managing suppliers, purchases, and sales using e-invoicing.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.facturacion.</span></span><span class="sig-name descname"><span class="pre">Facturacion</span></span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite gestionar proveeedores, compras y ventas con
-facturación (DTE).</p>
+<p>Module for managing suppliers, purchases, and sales using e-invoicing(DTE).</p>
+<p>This class provides methods for retrieving DTE records related to
+sales and purchases, as well as listing clients and suppliers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be read from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base API URL. If not provided, a default will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version to use. If not specified, a default
+version will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception on HTTP error
+responses. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listarClientes">
-<span class="sig-name descname"><span class="pre">listarClientes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listarClientes" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de clientes
-asociados a ventas.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listar_clientes">
+<span class="sig-name descname"><span class="pre">listar_clientes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listar_clientes" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of clients associated with sales DTEs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Respuesta JSON con el listado de clientes de ventas.</p>
+<dd class="field-odd"><p>JSON response containing the list of sales clients.</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -609,20 +603,18 @@ asociados a ventas.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listarCompras">
-<span class="sig-name descname"><span class="pre">listarCompras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estado</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtros</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listarCompras" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de documentos
-tributarios electrónicos asociados a compras.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listar_compras">
+<span class="sig-name descname"><span class="pre">listar_compras</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estado</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtros</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listar_compras" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of purchase-related DTEs with full details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>estado</strong> (<em>int</em>) – Estado del documento en el registro de compras.</p></li>
-<li><p><strong>filtros</strong> (<em>dict</em>) – Filtros de búsqueda.</p></li>
+<li><p><strong>estado</strong> (<em>int</em>) – Status of the document in the purchase register.</p></li>
+<li><p><strong>filtros</strong> (<em>dict</em>) – Filters to apply to the query(e.g., by supplier, date).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado paginado de DTEs de compras, con
-detalle.</p>
+<dd class="field-even"><p>JSON response with the paginated list of purchase DTEs.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -631,13 +623,12 @@ detalle.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listarProveedores">
-<span class="sig-name descname"><span class="pre">listarProveedores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listarProveedores" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de proveedores
-asociados a compras.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listar_proveedores">
+<span class="sig-name descname"><span class="pre">listar_proveedores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listar_proveedores" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of suppliers associated with purchase DTEs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Respuesta JSON con el listado de proveedores de compras.</p>
+<dd class="field-odd"><p>JSON response containing the list of suppliers.</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -646,17 +637,15 @@ asociados a compras.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listarVentas">
-<span class="sig-name descname"><span class="pre">listarVentas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listarVentas" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de documentos
-tributarios electrónicos asociados a ventas</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.listar_ventas">
+<span class="sig-name descname"><span class="pre">listar_ventas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filtros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.listar_ventas" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of sales-related DTEs with full details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Filtros de búsqueda.</p>
+<dd class="field-odd"><p><strong>filtros</strong> (<em>dict</em>) – Optional filters to apply to the sales search.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado paginado de DTEs de ventas,
-con detalle.</p>
+<dd class="field-even"><p>JSON response containing the list of sales DTEs.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -665,16 +654,15 @@ con detalle.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.resumenVentasSinDetalle">
-<span class="sig-name descname"><span class="pre">resumenVentasSinDetalle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.resumenVentasSinDetalle" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de resumenes asociados
-a ventas.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.facturacion.Facturacion.resumen_ventas_sin_detalle">
+<span class="sig-name descname"><span class="pre">resumen_ventas_sin_detalle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.facturacion.Facturacion.resumen_ventas_sin_detalle" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of sales summaries for a given period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Periodo donde obtener el listado de resumen de ventas.</p>
+<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Period to filter the sales summary list (e.g.,2023-08).</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado paginado de ventas.</p>
+<dd class="field-even"><p>JSON response with the paginated list of sales summaries.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -687,35 +675,37 @@ a ventas.</p>
 </section>
 <section id="module-contafi.api_client.client.ingresos_egresos">
 <span id="contafi-api-client-client-ingresos-egresos-module"></span><h2>contafi.api_client.client.ingresos_egresos module<a class="headerlink" href="#module-contafi.api_client.client.ingresos_egresos" title="Link to this heading"></a></h2>
+<p>Client for managing and listing monetary transactions (income/expenses).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.ingresos_egresos.IngresosEgresos">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.ingresos_egresos.</span></span><span class="sig-name descname"><span class="pre">IngresosEgresos</span></span><a class="headerlink" href="#contafi.api_client.client.ingresos_egresos.IngresosEgresos" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite manejar y listar los movimientos de dinero efectuados.</p>
+<p>Module for managing and listing monetary transactions (income/expenses).</p>
+<p>This class provides access to the list of money movements performed
+or received by the taxpayer for a given period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be retrieved from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base API URL. If not provided, a default will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version. If not provided, a default version
+will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception automatically
+on HTTP error responses. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.ingresos_egresos.IngresosEgresos.listarMovimientos">
-<span class="sig-name descname"><span class="pre">listarMovimientos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.ingresos_egresos.IngresosEgresos.listarMovimientos" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de movimientos
-(otros ingresos/egresos) del contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.ingresos_egresos.IngresosEgresos.listar_movimientos">
+<span class="sig-name descname"><span class="pre">listar_movimientos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.ingresos_egresos.IngresosEgresos.listar_movimientos" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of income/expense transactions for a period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Periodo por el cual consultar los movimientos.</p>
+<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Period for which to retrieve the list of transactions.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado de movimientos efectuados y recibidos.</p>
+<dd class="field-even"><p>JSON response with all performed and received movements.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -728,35 +718,37 @@ de error HTTP. Por defecto es True.</p></li>
 </section>
 <section id="module-contafi.api_client.client.remuneraciones">
 <span id="contafi-api-client-client-remuneraciones-module"></span><h2>contafi.api_client.client.remuneraciones module<a class="headerlink" href="#module-contafi.api_client.client.remuneraciones" title="Link to this heading"></a></h2>
+<p>Client for retrieving information related to employee payroll.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="contafi.api_client.client.remuneraciones.Remuneraciones">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">contafi.api_client.client.remuneraciones.</span></span><span class="sig-name descname"><span class="pre">Remuneraciones</span></span><a class="headerlink" href="#contafi.api_client.client.remuneraciones.Remuneraciones" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="contafi.api_client.html#contafi.api_client.ApiBase" title="contafi.api_client.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
-<p>Módulo que permite obtener información de las remuneraciones.</p>
+<p>Module for retrieving information related to employee payroll.</p>
+<p>This class provides access to salary records (remuneraciones) for a
+taxpayer, including optional filtering by period.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>api_token</strong> (<em>str</em>) – Token de autenticación del usuario. Si no se proporciona, se
-intentará obtener de una variable de entorno.</p></li>
-<li><p><strong>api_url</strong> (<em>str</em>) – URL base de la API. Si no se proporciona, se usará una URL por defecto.</p></li>
-<li><p><strong>api_version</strong> (<em>str</em>) – Versión de la API. Si no se proporciona, se usará una versión
-por defecto.</p></li>
-<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Si se debe lanzar una excepción automáticamente para respuestas
-de error HTTP. Por defecto es True.</p></li>
+<li><p><strong>api_token</strong> (<em>str</em>) – User authentication token. If not provided, it will
+be read from an environment variable.</p></li>
+<li><p><strong>api_url</strong> (<em>str</em>) – Base API URL. If not provided, a default will be used.</p></li>
+<li><p><strong>api_version</strong> (<em>str</em>) – API version. If not specified, a default version
+will be used.</p></li>
+<li><p><strong>api_raise_for_status</strong> (<em>bool</em>) – Whether to raise an exception on HTTP error
+responses. Defaults to True.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="contafi.api_client.client.remuneraciones.Remuneraciones.listarRemuneraciones">
-<span class="sig-name descname"><span class="pre">listarRemuneraciones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.remuneraciones.Remuneraciones.listarRemuneraciones" title="Link to this definition"></a></dt>
-<dd><p>Recurso que permite obtener el listado paginado de remuneraciones del
-contribuyente.</p>
+<dt class="sig sig-object py" id="contafi.api_client.client.remuneraciones.Remuneraciones.listar_remuneraciones">
+<span class="sig-name descname"><span class="pre">listar_remuneraciones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periodo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#contafi.api_client.client.remuneraciones.Remuneraciones.listar_remuneraciones" title="Link to this definition"></a></dt>
+<dd><p>Retrieve a paginated list of remuneration records for the taxpayer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Periodo de búsqueda para las remuneraciones.</p>
+<dd class="field-odd"><p><strong>periodo</strong> (<em>str</em>) – Optional period to filter the payroll list.</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Respuesta JSON con el listado de remuneraciones.</p>
+<dd class="field-even"><p>JSON response containing the remuneration records.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -769,6 +761,7 @@ contribuyente.</p>
 </section>
 <section id="module-contafi.api_client.client">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-contafi.api_client.client" title="Link to this heading"></a></h2>
+<p>Client package for the ContaFi API.</p>
 </section>
 </section>
 

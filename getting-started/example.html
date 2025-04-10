@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ejemplo &mdash; documentación de contafi - 1.0.1</title>
+  <title>Ejemplo &mdash; documentación de contafi - 2.0.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=92bc2f6d"></script>
+      <script src="../_static/documentation_options.js?v=ea25ecff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/translations.js?v=f85f4cfb"></script>
@@ -92,25 +92,25 @@
 </div>
 <p>El siguiente es un ejemplo básico de cómo emitir una BTE utilizando el cliente de API.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importaciones del cliente de API de ContaFi.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">UTC</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contafi.api_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contafi.api_client.client.bte</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bte</span>
 
 <span class="c1"># Instancia de cliente.</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">Bte</span><span class="p">()</span>
 <span class="c1"># RUT del emisor.</span>
-<span class="n">rutEmisor</span> <span class="o">=</span> <span class="s2">&quot;12345678-9&quot;</span>
+<span class="n">rut_emisor</span> <span class="o">=</span> <span class="s2">&quot;12345678-9&quot;</span>
 <span class="c1"># Fecha de emisión de BHE.</span>
-<span class="n">fechaEmis</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">fecha_emis</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Datos de la boleta a ser emitida.</span>
-<span class="n">datosBte</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">datos_bte</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;Encabezado&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;IdDoc&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;FchEmis&#39;</span> <span class="p">:</span> <span class="n">fechaEmis</span><span class="p">,</span>
+            <span class="s1">&#39;FchEmis&#39;</span> <span class="p">:</span> <span class="n">fecha_emis</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;Emisor&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;RUTEmisor&#39;</span> <span class="p">:</span> <span class="n">rutEmisor</span><span class="p">,</span>
+            <span class="s1">&#39;RUTEmisor&#39;</span> <span class="p">:</span> <span class="n">rut_emisor</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;Receptor&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;RUTRecep&#39;</span> <span class="p">:</span> <span class="s1">&#39;66666666-6&#39;</span><span class="p">,</span>
@@ -132,7 +132,7 @@
 <span class="p">}</span>
 
 <span class="c1"># Respuesta de solicitud HTTP (POST) de emisión de boleta.</span>
-<span class="n">response</span> <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">emitir</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span>  <span class="n">client</span><span class="o">.</span><span class="n">emitir</span><span class="p">(</span><span class="n">datos_bte</span><span class="p">)</span>
 
 <span class="c1"># Despliegue del resultado.</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">EMISION BOLETA: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
