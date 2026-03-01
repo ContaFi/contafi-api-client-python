@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - master  # Ejecuta pruebas al hacer push en la rama 'master'
+      - master
 
 env:
   env_var: ${{ vars.ENV_CONTEXT_VAR }}
@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.11']  # Puedes cambiar las versiones según necesites
+        python-version: ['3.11']
 
     steps:
       - name: Check out repository code
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}  # Configura la versión de Python desde la matriz
+          python-version: ${{ matrix.python-version }}
 
       - name: Install Ruff
         run: |
