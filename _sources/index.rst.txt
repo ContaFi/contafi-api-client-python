@@ -12,10 +12,6 @@ ContaFi: Cliente de API en Python - Documentación
     :target: https://pypi.org/project/contafi
 .. image:: https://img.shields.io/pypi/pyversions/contafi.svg
     :target: https://pypi.org/project/contafi
-.. image:: https://scrutinizer-ci.com/g/contafi/contafi-api-client-python/badges/quality-score.png?b=master
-    :target: https://scrutinizer-ci.com/g/contafi/contafi-api-client-python/
-.. image:: https://scrutinizer-ci.com/g/contafi/contafi-api-client-python/badges/coverage.png?b=master
-    :target: https://scrutinizer-ci.com/g/contafi/contafi-api-client-python/
 .. image:: https://img.shields.io/pypi/l/contafi.svg
     :target: https://raw.githubusercontent.com/contafi/contafi-api-client-python/master/COPYING
 
@@ -50,4 +46,4 @@ Enlaces
 - `Sitio web ContaFi <https://www.contafi.cl>`_.
 - `Código fuente en GitHub <https://github.com/contafi/contafi-api-client-python>`_.
 - `Paquete en PyPI <https://pypi.org/project/contafi>`_.
-- `Documentación <https://developers.contafi.cl/>`_.
+- `Documentación <https://api-client-python.docs.contafi.cl>`_.
